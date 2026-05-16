@@ -214,6 +214,55 @@ Jugendhilfe in Berlin und im südlichen Brandenburger Speckgürtel.
 - Portugal Algarve Sozial-Förderprogramme
 - Familienstiftung Liechtenstein
 
+## PERSÖNLICHE BACKGROUND-THEMEN (immer "context", nie "action" oder "relevant")
+
+Diese Themen interessieren JM persönlich, sind aber NICHT geschäftskritisch.
+Sie sollen NUR als context klassifiziert werden — kommen ins HINTERGRUND-
+Segment des Briefings, nie ganz oben. Werden bei Bedarf in Wochen- bzw.
+Monats-Specials gebündelt.
+
+### Steuerrecht & Stiftungen (Tier 2)
+- §13b ErbStG / Wohnungsunternehmen
+- Wegzugsteuer-Reformen
+- Familienstiftung Deutschland und Liechtenstein
+- Schenkungsteuer, Betriebsvermögensverschonung
+- Doppelbesteuerungsabkommen DE-CH, DE-FL
+- Mindeststeuer / GloBE
+
+### FL / Liechtenstein / Schweizer Wegzug (Tier 2)
+- Stiftungsrecht-Änderungen FL
+- Pauschalbesteuerung (Tessin, Zug, Schwyz)
+- MEBEKO / Approbation
+- Niederlassungsrecht für Deutsche
+- Lugano / Tessin Wirtschaft, Immobilien, Lokalpolitik
+- Zug / Innerschweiz: Steuer, Crypto/Blockchain
+
+### Familie & Demografie (Tier 3)
+- Geburtenraten Europa
+- Familienpolitik, Steuervorteile
+- Schulsysteme Schweiz vs. Deutschland
+- Migration, soziale Polarisierung Berlin
+
+### Gesundheit & Longevity (Tier 3)
+- Bryan Johnson, Peter Attia, Sinclair – Updates
+- Neue Supplemente / Protokolle (z.B. Rapamycin)
+- Zone-2-Forschung, Bewegungsmedizin
+- Schlafforschung
+
+### Künstliche Intelligenz (Tier 3)
+- Anthropic, OpenAI, Google neue Releases
+- KI in Pflege / Sozialarbeit
+- KI-Agenten für Business-Automation
+- Regulierung (EU AI Act, Schweiz)
+
+### Makro & Politik / Sovereign Lifestyle (Tier 4)
+- Wahlen Deutschland, AfD-Entwicklung
+- Vermögensteuer / Erbschaftsteuer Reformen (allgemein)
+- Klimawandel Mittelmeerraum / Alpenraum
+- Goldene Visa, zweite Staatsbürgerschaft
+- CRS / Kontoautomatischer Informationsaustausch
+- Family Offices Trends, multigenerational wealth
+
 ## SEMANTISCHE PRIORITÄTEN (für das Briefing)
 1. **DRINGEND**: Antragsfristen <14 Tage, akute Trägerausschreibungen, Insolvenzen im Markt
 2. **HOCH**: Fördermittel-Calls, Trägeraufrufe in Berlin/südl. Brandenburg, eigene Bezirke
@@ -231,12 +280,15 @@ Pro Action-Item im Briefing nach Möglichkeit angeben:
 
 Bewerte jedes News-Item nach folgenden Bändern:
 
-- **"ignore" (0-2)**: Ausschlussfilter-Themen (Sport, Promi, Wetter, Werbung), Themen ohne JM-Bezug, generische Politik
-- **"context" (3-5)**: NIEDRIG-Themen, allgemeine Hintergrund-Info, Branchentrends ohne direkte Action
-- **"relevant" (6-8)**: MITTEL-Themen, Marktbewegungen Berlin/Brandenburg, Verbandsmeldungen, Personal-/Bauthemen, MEDIUM-Trigger
+- **"ignore" (0-2)**: Ausschlussfilter-Themen (Sport, Promi, Wetter, Werbung), Themen ohne JM-Bezug, generische Politik ohne Berlin/Brandenburg-Trägerwirkung
+- **"context" (3-5)**: NIEDRIG-Themen, PERSÖNLICHE BACKGROUND-THEMEN (Tier 2-5: Steuer, Wegzug Schweiz, Longevity, KI, Makro), Branchentrends ohne direkte Action
+- **"relevant" (6-8)**: MITTEL-Themen, Marktbewegungen Berlin/Brandenburg, Verbandsmeldungen, Personal-/Bauthemen, MEDIUM-Trigger — NUR aus Tier 1 (Jugendhilfe / Kita / IBB-Immobilien)
 - **"action" (9-10)**: HOCH-Themen mit Frist oder direktem JM-Bezug — Trägeraufruf, Fördermittel-Call, Insolvenz im Marktbereich, jede Erwähnung von "Sophien", "Altglienicke" + Sozial, "Treptow-Köpenick Jugendamt", "BRVJug", "Platzausbau Jugend"
 
-Im Zweifel niedriger einstufen — lieber ein action-Item zu wenig als ein wirres Briefing.
+**Wichtige Disziplin:**
+- Persönliche Background-Themen (Steuerrecht, Schweizer Wegzug, Longevity, KI, Makro) NIEMALS höher als context (5) einstufen — auch wenn sie spannend sind. Die gehören in den HINTERGRUND-Sammel des Briefings, nicht oben rein.
+- Im Zweifel niedriger einstufen — lieber ein action-Item zu wenig als ein wirres Briefing.
+- Daily-Briefing soll knapp und entscheidungsorientiert sein. Information-Overload ist das größte Risiko.
 
 ## OUTPUT-FORMAT pro Item
 

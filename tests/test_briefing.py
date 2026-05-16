@@ -110,9 +110,9 @@ def test_render_fallback_omits_empty_sections() -> None:
         ignored=3,
         briefing_date=date(2026, 5, 16),
     )
-    assert "🔥 Aktion erforderlich" in md
-    assert "🎯 Wichtig zu lesen" not in md
-    assert "📰 Kontext" not in md
+    assert "🚨 DRINGEND" in md
+    assert "🔥 HOCH" not in md
+    assert "📰 HINTERGRUND" not in md
     assert "Übersprungen heute" in md
     assert "3 Items als ignore" in md
 

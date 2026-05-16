@@ -23,34 +23,70 @@ RETRY_BASE_SECONDS = 2.0
 BRIEFING_SYSTEM = """Du bist JMs persoenlicher Redakteur fuer das taegliche Briefing.
 
 Schreib praezise auf Deutsch, max. 1.500 Woerter, im Markdown-Format.
-Nutze die Items, die JMs Filter bereits als action / relevant / context klassifiziert hat.
-Pro Item liest du zuerst die JM-Profil-Hinweise im System-Prompt nicht erneut vor,
-sondern nutzt sie nur, um die JM-Implikation pro Action-Item knapp zu formulieren.
+Nutze die Items, die JMs Filter bereits als action / relevant / context
+klassifiziert hat. Pro Item nutzt du das JM-Profil im System-Prompt nur,
+um die JM-Implikation pro Action-Item knapp zu formulieren - nicht um
+Items neu zu bewerten.
 
-Halte dich strikt an dieses Template (Emojis exakt so uebernehmen):
+# Standard-Template (Emojis exakt so uebernehmen):
 
 # JM-Briefing {DATUM}
 
-## 🔥 Aktion erforderlich
+## 🚨 DRINGEND
 - **{Headline}**
-  2-3 Saetze Kern.
+  2-3 Saetze Kern. Wenn eine Antragsfrist erwaehnt wird, nenne sie explizit
+  ("Frist: TT.MM.JJJJ" oder "Bewerbung bis ...").
   *JM-Implikation:* 1-2 Saetze.
   Quelle: [{source}]({url})
 
-## 🎯 Wichtig zu lesen
+## 🔥 HOCH
+- **{Headline}** - 2-3 Saetze Kern. *JM-Implikation:* 1 Satz.
+  Quelle: [{source}]({url})
+
+## 🎯 MITTEL
 - **{Headline}** - 1-2 Saetze. [{source}]({url})
 
-## 📰 Kontext (Sammelmeldung)
+## 📰 HINTERGRUND (Sammelmeldung)
 - **{Stichwort}**: 1 Satz. [{source}]({url})
 
 ## ⏭️ Übersprungen heute
 {N} Items als ignore klassifiziert.
 
-Regeln:
-- Wenn keine Action-Items: lass den ganzen "Aktion erforderlich"-Block weg.
-- Wenn keine Relevant-Items: lass den Block weg. Analog fuer Kontext.
-- Bei null Items insgesamt: schreibe "Keine relevanten Nachrichten heute." als Body.
-- Keine Phantasie-Quellen, keine zusaetzlichen Sections."""
+# Mapping action/relevant/context -> Sections:
+- DRINGEND: action-Items, bei denen aus Snippet/Titel eine Antragsfrist
+  <14 Tage hervorgeht ODER eine akute Traegerausschreibung in
+  Berlin/Brandenburg.
+- HOCH: alle uebrigen action-Items + relevant-Items mit Score >= 7.
+- MITTEL: relevant-Items mit Score 6.
+- HINTERGRUND: context-Items (inkl. persoenliche Background-Themen wie
+  Longevity, KI, Schweizer Wegzug - die gehoeren NICHT nach HOCH/MITTEL).
+
+# Sonderformate (zusaetzlich am Ende, NACH "Uebersprungen heute"):
+
+Wenn der User-Prompt enthaelt "Sonderformat aktiv: Mittwoch-Wochenrueckblick":
+## 📅 Wochenrueckblick Traegeraufrufe
+Alle heute zugefuehrten Items (egal welche Section), deren Titel oder
+Snippet "Traegeraufruf", "Foerderaufruf", "Ausschreibung", "Bewerbung"
+oder vergleichbares enthaelt - kompakt als Liste mit Frist sofern erkennbar.
+Max 12 Items. Wenn keine passenden Items: Section komplett weglassen.
+
+Wenn der User-Prompt enthaelt "Sonderformat aktiv: Monatsbilanz":
+## 📊 Monats-Bilanz Foerderprogramme & Marktbeobachtung
+Zwei Unterabschnitte aus den heute zugefuehrten Items:
+- **Foerderprogramme**: alle Foerderprogramm-/Zuwendungs-Themen kompakt.
+- **Markt- und Uebernahmebeobachtung**: Traegerwechsel, Insolvenzen,
+  Schliessungen, Trägerausschreibungen.
+Max je 8 Items pro Unterabschnitt. Leere Unterabschnitte weglassen.
+
+# Regeln:
+- Wenn eine Section leer ist, lass sie komplett weg (inkl. ##-Ueberschrift).
+- Bei null Items insgesamt: schreibe nur "Keine relevanten Nachrichten heute."
+- Keine Phantasie-Quellen, keine zusaetzlichen Sections.
+- "Lieber knapp und hoch": im Zweifel ein Item in die hoehere Section
+  schieben (HOCH statt MITTEL etc.) statt zu vielen MITTEL-Eintraegen.
+- Persoenliche Background-Themen (Steuer, Wegzug Schweiz, Longevity, KI)
+  gehoeren in HINTERGRUND - selbst wenn der Filter sie als "relevant" markiert.
+"""
 
 
 class BriefingGenerator:
@@ -158,6 +194,22 @@ def _group_items(items: list[NewsItem]) -> dict[str, list[NewsItem]]:
     }
 
 
+_WEEKDAYS_DE = (
+    "Montag", "Dienstag", "Mittwoch", "Donnerstag",
+    "Freitag", "Samstag", "Sonntag",
+)
+
+
+def _sonderformat_for(d: date) -> str:
+    """Return the Sonderformat label active on this date, or empty string."""
+    weekday = d.weekday()  # 0 = Monday
+    if weekday == 2:
+        return "Mittwoch-Wochenrueckblick"
+    if weekday == 0 and d.day <= 7:
+        return "Monatsbilanz"
+    return ""
+
+
 def _build_user_prompt(
     groups: dict[str, list[NewsItem]],
     ignored: int,
@@ -177,9 +229,18 @@ def _build_user_prompt(
             )
         return "\n".join(lines) + "\n"
 
+    weekday = _WEEKDAYS_DE[briefing_date.weekday()]
+    sonderformat = _sonderformat_for(briefing_date)
+    sonderformat_line = (
+        f"Sonderformat aktiv: {sonderformat}"
+        if sonderformat
+        else "Sonderformat aktiv: keiner"
+    )
+
     parts = [
-        f"Datum: {briefing_date.isoformat()}",
+        f"Datum: {briefing_date.isoformat()} ({weekday})",
         f"Ignorierte Items heute: {ignored}",
+        sonderformat_line,
         "",
         _block("ACTION", groups["action"]),
         _block("RELEVANT", groups["relevant"]),
@@ -203,7 +264,11 @@ def _render_fallback(
     ignored: int,
     briefing_date: date,
 ) -> str:
-    """Deterministic Markdown fallback when the LLM call fails."""
+    """Deterministic Markdown fallback when the LLM call fails.
+
+    Uses a simplified mapping (all action -> DRINGEND, all relevant -> HOCH)
+    since we can't apply the LLM's frist/score heuristic offline.
+    """
     out: list[str] = [
         f"# JM-Briefing {briefing_date.isoformat()}",
         "",
@@ -211,19 +276,19 @@ def _render_fallback(
         "",
     ]
     if groups["action"]:
-        out.append("## 🔥 Aktion erforderlich")
+        out.append("## 🚨 DRINGEND")
         for it in groups["action"]:
             out.append(f"- **{it.title}** [{it.source}]({it.url})")
             if it.snippet:
                 out.append(f"  {it.snippet}")
         out.append("")
     if groups["relevant"]:
-        out.append("## 🎯 Wichtig zu lesen")
+        out.append("## 🔥 HOCH")
         for it in groups["relevant"]:
             out.append(f"- **{it.title}** [{it.source}]({it.url})")
         out.append("")
     if groups["context"]:
-        out.append("## 📰 Kontext")
+        out.append("## 📰 HINTERGRUND")
         for it in groups["context"]:
             out.append(f"- {it.title} [{it.source}]({it.url})")
         out.append("")

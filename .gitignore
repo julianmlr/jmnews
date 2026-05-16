@@ -13,7 +13,7 @@ dist/
 .env.local
 
 data/*.db
-data/*.db.bak
+data/*.db.*
 data/briefings/*.md
 data/logs/
 !data/briefings/.gitkeep

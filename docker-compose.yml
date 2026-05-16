@@ -1,0 +1,13 @@
+services:
+  jmnews:
+    build: .
+    image: jmnews:latest
+    container_name: jmnews
+    env_file:
+      - .env
+    volumes:
+      - ./data:/app/data
+      - ./jm_profile.md:/app/jm_profile.md:ro
+    restart: unless-stopped
+    # Default CMD is `run-daemon` (APScheduler). Override per spec's cron
+    # approach with:  docker compose run --rm jmnews run-once

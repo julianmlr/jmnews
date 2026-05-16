@@ -1,18 +1,16 @@
-"""NbF Brandenburg news scraper."""
+"""NbF Brandenburg WordPress RSS feed."""
 
 from __future__ import annotations
 
-from jmnews.sources.base import ScrapeSelectors, ScrapingSource
+from jmnews.sources.base import RSSSource
 
 
-class NbF(ScrapingSource):
+class NbF(RSSSource):
     name = "nbf"
-    page_url = "https://www.nbfev.de/"
-    base_url = "https://www.nbfev.de"
-    selectors = ScrapeSelectors(
-        container="article, .news, .post, .teaser",
-        title="h2, h3, .entry-title",
-        link="a[href]",
-        snippet="p, .entry-summary",
-        date="time[datetime], time, .date",
-    )
+    DEFAULT_URL = "https://www.nbfev.de/feed/"
+
+    def __init__(self, url: str = DEFAULT_URL) -> None:
+        self._url = url
+
+    def feed_urls(self) -> list[str]:
+        return [self._url]

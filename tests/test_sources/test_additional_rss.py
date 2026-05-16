@@ -16,11 +16,11 @@ import pytest
 
 from jmnews.sources import enabled_sources
 from jmnews.sources.berliner_zeitung import BerlinerZeitung
+from jmnews.sources.nbf import NbF
 from jmnews.sources.rbb24 import Rbb24
-from jmnews.sources.tagesspiegel import Tagesspiegel
 from jmnews.sources.taz_berlin import TazBerlin
 
-SOURCE_CLASSES = [Tagesspiegel, BerlinerZeitung, TazBerlin, Rbb24]
+SOURCE_CLASSES = [BerlinerZeitung, TazBerlin, Rbb24, NbF]
 
 
 @pytest.mark.parametrize("source_cls", SOURCE_CLASSES)

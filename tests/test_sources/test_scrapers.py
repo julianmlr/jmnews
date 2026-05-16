@@ -18,9 +18,8 @@ from jmnews.sources.bsfz import BSFZ
 from jmnews.sources.daks import DaKS
 from jmnews.sources.ibb import IBB
 from jmnews.sources.ilb import ILB
-from jmnews.sources.nbf import NbF
 
-SCRAPER_CLASSES = [IBB, ILB, BSFZ, DaKS, NbF, BrandenburgVorschriften]
+SCRAPER_CLASSES = [IBB, ILB, BSFZ, DaKS, BrandenburgVorschriften]
 
 
 @pytest.mark.parametrize("source_cls", SCRAPER_CLASSES)

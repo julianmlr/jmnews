@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:n="http://www.google.com/schemas/sitemap-news/0.9">
+  <url>
+    <loc>https://www.tagesspiegel.de/berlin/u7-verlaengerung-spandau-12345.html</loc>
+    <n:news>
+      <n:publication>
+        <n:name>tagesspiegel</n:name>
+        <n:language>de</n:language>
+      </n:publication>
+      <n:publication_date>2026-05-16T20:00:00+02:00</n:publication_date>
+      <n:title>Verlängerung der U7 in Spandau</n:title>
+    </n:news>
+  </url>
+  <url>
+    <loc>https://www.tagesspiegel.de/kultur/eurovision-2026-67890.html</loc>
+    <n:news>
+      <n:publication>
+        <n:name>tagesspiegel</n:name>
+        <n:language>de</n:language>
+      </n:publication>
+      <n:publication_date>2026-05-16T22:14:00+02:00</n:publication_date>
+      <n:title>Eurovision Song Contest 2026</n:title>
+    </n:news>
+  </url>
+  <url>
+    <loc>https://www.tagesspiegel.de/berlin/berliner-wirtschaft/high-fiber-99999.html</loc>
+    <n:news>
+      <n:publication>
+        <n:name>tagesspiegel</n:name>
+        <n:language>de</n:language>
+      </n:publication>
+      <n:publication_date>2026-05-15T08:00:00+02:00</n:publication_date>
+      <n:title>High Fiber Drinks im Supermarktregal</n:title>
+    </n:news>
+  </url>
+  <url>
+    <loc>https://www.tagesspiegel.de/berlin/zu-alt-11111.html</loc>
+    <n:news>
+      <n:publication>
+        <n:name>tagesspiegel</n:name>
+        <n:language>de</n:language>
+      </n:publication>
+      <n:publication_date>2026-04-01T08:00:00+02:00</n:publication_date>
+      <n:title>Altes Berlin-Item</n:title>
+    </n:news>
+  </url>
+</urlset>

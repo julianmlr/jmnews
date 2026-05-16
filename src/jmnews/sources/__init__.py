@@ -12,6 +12,8 @@ from jmnews.sources.diakonie_bb import DiakonieBB
 from jmnews.sources.dsee import DSEE
 from jmnews.sources.ibb import IBB
 from jmnews.sources.ilb import ILB
+from jmnews.sources.jugendhilfeportal import Jugendhilfeportal
+from jmnews.sources.mbjs_brandenburg import MBJSBrandenburg
 from jmnews.sources.nbf import NbF
 from jmnews.sources.paritaet_berlin import ParitaetBerlin
 from jmnews.sources.rbb24 import Rbb24
@@ -37,6 +39,8 @@ def enabled_sources() -> list[Source]:
         DaKS(),
         ParitaetBerlin(),
         DiakonieBB(),
+        MBJSBrandenburg(),
+        Jugendhilfeportal(),
         BrandenburgVorschriften(),
     ]
 
@@ -51,6 +55,8 @@ __all__ = [
     "BrandenburgVorschriften",
     "DaKS",
     "DiakonieBB",
+    "Jugendhilfeportal",
+    "MBJSBrandenburg",
     "NbF",
     "ParitaetBerlin",
     "Rbb24",

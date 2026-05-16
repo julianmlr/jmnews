@@ -19,10 +19,12 @@ from jmnews.sources.daks import DaKS
 from jmnews.sources.diakonie_bb import DiakonieBB
 from jmnews.sources.ibb import IBB
 from jmnews.sources.ilb import ILB
+from jmnews.sources.mbjs_brandenburg import MBJSBrandenburg
 from jmnews.sources.paritaet_berlin import ParitaetBerlin
 
 SCRAPER_CLASSES = [
     IBB, ILB, BSFZ, DaKS, BrandenburgVorschriften, ParitaetBerlin, DiakonieBB,
+    MBJSBrandenburg,
 ]
 
 
@@ -101,6 +103,8 @@ def test_enabled_sources_includes_all_configured() -> None:
         "daks",
         "paritaet_berlin",
         "diakonie_bb",
+        "mbjs_brandenburg",
+        "jugendhilfeportal",
         "brandenburg_vorschriften",
     }
     assert expected <= names

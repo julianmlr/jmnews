@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Pressemitteilungen Berlin (Auswahl)</title>
+    <link>https://www.berlin.de/presse/pressemitteilungen/</link>
+    <description>Aggregierter Feed Berliner Senatsverwaltungen und Bezirksaemter</description>
+    <language>de</language>
+    <atom:link href="https://www.berlin.de/presse/pressemitteilungen/index/feed" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Senatsverwaltung Jugend kuendigt Platzausbauprogramm Kita 2027 an</title>
+      <link>https://www.berlin.de/presse/pressemitteilungen/2026/pressemitteilung.1234567.php</link>
+      <description><![CDATA[<p>Die Senatsverwaltung fuer Bildung, Jugend und Familie informiert ueber den Ausbau von Kitaplaetzen. Antraege ab Juni moeglich.</p>]]></description>
+      <pubDate>Fri, 16 May 2026 08:30:00 +0200</pubDate>
+      <guid isPermaLink="true">https://www.berlin.de/presse/pressemitteilungen/2026/pressemitteilung.1234567.php</guid>
+    </item>
+    <item>
+      <title>Bezirksamt Treptow-Koepenick: Strassensperrungen Mai 2026</title>
+      <link>https://www.berlin.de/presse/pressemitteilungen/2026/pressemitteilung.1234568.php</link>
+      <description><![CDATA[<p>Aufgrund von Bauarbeiten werden mehrere Strassen in Adlershof gesperrt.</p>]]></description>
+      <pubDate>Fri, 16 May 2026 07:15:00 +0200</pubDate>
+      <guid isPermaLink="true">https://www.berlin.de/presse/pressemitteilungen/2026/pressemitteilung.1234568.php</guid>
+    </item>
+    <item>
+      <title>Senatsverwaltung Finanzen veroeffentlicht Haushaltsplan-Entwurf</title>
+      <link>https://www.berlin.de/presse/pressemitteilungen/2026/pressemitteilung.1234569.php</link>
+      <description><![CDATA[Der Senat hat den Entwurf des Doppelhaushalts 2027/2028 vorgestellt.]]></description>
+      <pubDate>Thu, 15 May 2026 16:00:00 +0200</pubDate>
+      <guid isPermaLink="true">https://www.berlin.de/presse/pressemitteilungen/2026/pressemitteilung.1234569.php</guid>
+    </item>
+    <item>
+      <title>Item ohne Datum als Test</title>
+      <link>https://www.berlin.de/presse/pressemitteilungen/2026/pressemitteilung.1234570.php</link>
+      <description>Kurzer Auszug ohne Datum.</description>
+      <guid isPermaLink="true">https://www.berlin.de/presse/pressemitteilungen/2026/pressemitteilung.1234570.php</guid>
+    </item>
+  </channel>
+</rss>

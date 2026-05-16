@@ -26,10 +26,13 @@ jobs:
           script: |
             set -euo pipefail
             cd /root/jmnews
-            echo "==> Current commit before pull:"
+            echo "==> Current state before deploy:"
+            git status --short
             git log -1 --oneline
             echo "==> Fetching origin/main"
             git fetch origin main
+            # Ensure we're on `main` (first deploy may still be on the bootstrap branch).
+            git checkout main 2>/dev/null || git checkout -b main origin/main
             git reset --hard origin/main
             echo "==> New commit:"
             git log -1 --oneline

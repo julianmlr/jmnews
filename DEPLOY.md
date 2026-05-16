@@ -52,6 +52,13 @@ git clone https://github.com/julianmlr/jmnews.git
 cd jmnews
 cp .env.example .env
 nano .env          # ANTHROPIC_API_KEY, TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID
+
+# Data-Ordner mit der UID des Container-Users (1000) anlegen,
+# sonst crashed der Container beim ersten Start mit
+# `PermissionError: [Errno 13] Permission denied: 'data/logs'`.
+mkdir -p data/briefings data/logs
+chown -R 1000:1000 data
+
 docker compose up -d --build
 docker compose logs -f jmnews
 ```

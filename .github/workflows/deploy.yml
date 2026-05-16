@@ -1,0 +1,41 @@
+name: Deploy to Hetzner
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-hetzner
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.HETZNER_HOST }}
+          username: ${{ secrets.HETZNER_USER }}
+          key: ${{ secrets.HETZNER_SSH_KEY }}
+          port: 22
+          command_timeout: 10m
+          script_stop: true
+          script: |
+            set -euo pipefail
+            cd /root/jmnews
+            echo "==> Current commit before pull:"
+            git log -1 --oneline
+            echo "==> Fetching origin/main"
+            git fetch origin main
+            git reset --hard origin/main
+            echo "==> New commit:"
+            git log -1 --oneline
+            echo "==> Rebuilding container"
+            docker compose up -d --build
+            echo "==> Container status:"
+            docker compose ps
+            echo "==> Last 30 log lines:"
+            docker compose logs --tail=30 jmnews || true

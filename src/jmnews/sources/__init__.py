@@ -19,6 +19,7 @@ from jmnews.sources.paritaet_berlin import ParitaetBerlin
 from jmnews.sources.rbb24 import Rbb24
 from jmnews.sources.tagesspiegel import Tagesspiegel
 from jmnews.sources.taz_berlin import TazBerlin
+from jmnews.sources.vpk import VPK
 
 
 def enabled_sources() -> list[Source]:
@@ -41,6 +42,7 @@ def enabled_sources() -> list[Source]:
         DiakonieBB(),
         MBJSBrandenburg(),
         Jugendhilfeportal(),
+        VPK(),
         BrandenburgVorschriften(),
     ]
 
@@ -50,6 +52,7 @@ __all__ = [
     "DSEE",
     "IBB",
     "ILB",
+    "VPK",
     "BerlinPresseportal",
     "BerlinerZeitung",
     "BrandenburgVorschriften",

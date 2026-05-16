@@ -64,6 +64,10 @@ _DE_MONTHS: dict[str, str] = {
     # April, August, September, November are spelled the same in English.
 }
 
+# Last-resort fallback: pull a DD.MM.YYYY token out of a longer string
+# like "Pressemitteilung vom 22.04.2026" that dateutil can't parse.
+_DE_DATE_RE = re.compile(r"\b(\d{1,2}\.\d{1,2}\.\d{4})\b")
+
 
 def _normalize_german_months(s: str) -> str:
     out = s
@@ -85,11 +89,20 @@ def parse_datetime(value: Any) -> datetime:
         normalized = _normalize_german_months(value)
         try:
             dt = dateparser.parse(normalized, dayfirst=True)
-            if dt is None:
-                return datetime.now(UTC)
-            return dt if dt.tzinfo else dt.replace(tzinfo=UTC)
+            if dt is not None:
+                return dt if dt.tzinfo else dt.replace(tzinfo=UTC)
         except (ValueError, TypeError):
-            logger.warning("Failed to parse date {!r}, using now()", value)
+            pass
+        # dateutil failed on the full string — try extracting just a date token.
+        match = _DE_DATE_RE.search(normalized)
+        if match:
+            try:
+                dt = dateparser.parse(match.group(1), dayfirst=True)
+                if dt is not None:
+                    return dt if dt.tzinfo else dt.replace(tzinfo=UTC)
+            except (ValueError, TypeError):
+                pass
+        logger.warning("Failed to parse date {!r}, using now()", value)
     return datetime.now(UTC)
 
 

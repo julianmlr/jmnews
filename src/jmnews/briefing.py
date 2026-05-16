@@ -68,17 +68,25 @@ class BriefingGenerator:
         self._model = settings.briefing_model
         self._profile_text = Path(settings.profile_path).read_text(encoding="utf-8")
 
-    def generate(self, items: list[NewsItem], briefing_date: date) -> Briefing:
+    def generate(
+        self,
+        items: list[NewsItem],
+        briefing_date: date,
+        *,
+        ignored_count: int = 0,
+    ) -> Briefing:
         groups = _group_items(items)
-        ignored = sum(1 for i in items if i.category == "ignore")
+        # If caller didn't pass ignored_count, infer from items list as a fallback.
+        if ignored_count == 0:
+            ignored_count = sum(1 for i in items if i.category == "ignore")
         delivered_count = (
             len(groups["action"]) + len(groups["relevant"]) + len(groups["context"])
         )
 
-        markdown = self._call_sonnet(groups, ignored, briefing_date)
+        markdown = self._call_sonnet(groups, ignored_count, briefing_date)
         if markdown is None:
             logger.warning("Sonnet briefing failed; using deterministic fallback")
-            markdown = _render_fallback(groups, ignored, briefing_date)
+            markdown = _render_fallback(groups, ignored_count, briefing_date)
 
         return Briefing(
             id=briefing_date.isoformat(),

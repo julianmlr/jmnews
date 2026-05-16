@@ -14,5 +14,9 @@ def test_jm_profile_present() -> None:
     assert profile.exists()
     text = profile.read_text(encoding="utf-8")
     assert "Sophien Bildungswerk" in text
-    assert "AREAONE" in text
+    assert "Sophien Hof gGmbH" in text
+    assert "§34 SGB VIII" in text
+    # Classification rules + output format must stay; the Haiku filter
+    # depends on them to produce valid JSON.
     assert '"ignore"' in text
+    assert '"action"' in text

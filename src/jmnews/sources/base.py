@@ -56,13 +56,35 @@ def strip_html(text: str | None) -> str:
     return cleaned
 
 
+# dateutil has no German locale; normalize month names before parsing.
+_DE_MONTHS: dict[str, str] = {
+    "Januar": "January", "Februar": "February", "März": "March", "Maerz": "March",
+    "Mai": "May", "Juni": "June", "Juli": "July",
+    "Oktober": "October", "Dezember": "December",
+    # April, August, September, November are spelled the same in English.
+}
+
+
+def _normalize_german_months(s: str) -> str:
+    out = s
+    for de, en in _DE_MONTHS.items():
+        out = out.replace(de, en)
+    return out
+
+
 def parse_datetime(value: Any) -> datetime:
-    """Best-effort datetime parse with a `now(UTC)` fallback."""
+    """Best-effort datetime parse with a `now(UTC)` fallback.
+
+    Uses `dayfirst=True` because all configured sources are German-language
+    and dates appear in DD.MM.YYYY (or "5. Juni 2026") form; without this
+    "12.05.2026" would be read as December 5th instead of May 12th.
+    """
     if isinstance(value, datetime):
         return value if value.tzinfo else value.replace(tzinfo=UTC)
     if isinstance(value, str) and value.strip():
+        normalized = _normalize_german_months(value)
         try:
-            dt = dateparser.parse(value)
+            dt = dateparser.parse(normalized, dayfirst=True)
             if dt is None:
                 return datetime.now(UTC)
             return dt if dt.tzinfo else dt.replace(tzinfo=UTC)
@@ -80,13 +102,18 @@ class RSSSource(Source):
 
     def fetch(self, since: datetime) -> list[NewsItem]:
         out: list[NewsItem] = []
+        seen: set[str] = set()
         for url in self.feed_urls():
             try:
                 raw = http_get(url)
             except Exception as exc:  # noqa: BLE001
                 logger.warning("[{}] fetch failed for {}: {}", self.name, url, exc)
                 continue
-            out.extend(self._parse(raw))
+            for item in self._parse(raw):
+                if item.id in seen:
+                    continue
+                seen.add(item.id)
+                out.append(item)
 
         # Filter by `since` window.
         return [i for i in out if i.published_at >= since]

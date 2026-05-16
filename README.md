@@ -24,12 +24,16 @@ Briefings, purge nach 30 Tagen.
 
 ## Quellen
 
-**RSS** — Berlin Presseportal (aggregiert über 10 Senatsverwaltungen +
-Bezirksämter), Tagesspiegel Berlin, Berliner Zeitung, taz Berlin, rbb24.
+**RSS / Feeds / Sitemap** — Berlin Presseportal (16 Senatsverwaltungen,
+Landesämter, Bezirksämter, gruppiert in 3 Feeds wegen 10-Items-Cap pro
+Anfrage), Tagesspiegel Berlin (Google-News-Sitemap, `/berlin/`-Filter),
+Berliner Zeitung, taz Berlin, rbb24, NbF Brandenburg (Frauenhäuser),
+DSEE (Deutsche Stiftung für Engagement und Ehrenamt).
 
 **HTML-Scraping** — IBB, ILB Brandenburg, BSFZ Bescheinigungsstelle
-Forschungszulage, DaKS Berlin, NbF Brandenburg, Brandenburg Vorschriften
-(bravors).
+Forschungszulage, DaKS Berlin (Kinderladen-Blog), Paritätischer Berlin
+(Wohlfahrtsverband, Aktuelles), Diakonie BB (Wohlfahrtsverband, Meldungen),
+Brandenburg Vorschriften (bravors).
 
 ## Voraussetzungen
 

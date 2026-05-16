@@ -16,10 +16,14 @@ from jmnews.sources import enabled_sources
 from jmnews.sources.brandenburg_vorschriften import BrandenburgVorschriften
 from jmnews.sources.bsfz import BSFZ
 from jmnews.sources.daks import DaKS
+from jmnews.sources.diakonie_bb import DiakonieBB
 from jmnews.sources.ibb import IBB
 from jmnews.sources.ilb import ILB
+from jmnews.sources.paritaet_berlin import ParitaetBerlin
 
-SCRAPER_CLASSES = [IBB, ILB, BSFZ, DaKS, BrandenburgVorschriften]
+SCRAPER_CLASSES = [
+    IBB, ILB, BSFZ, DaKS, BrandenburgVorschriften, ParitaetBerlin, DiakonieBB,
+]
 
 
 @pytest.mark.parametrize("source_cls", SCRAPER_CLASSES)
@@ -79,21 +83,24 @@ def test_scraper_returns_empty_on_unparsable_html() -> None:
     assert items == []
 
 
-def test_enabled_sources_includes_all_eleven() -> None:
+def test_enabled_sources_includes_all_configured() -> None:
     names = {s.name for s in enabled_sources()}
     expected = {
-        # RSS
+        # RSS / feeds / sitemap
         "berlin_presseportal",
         "tagesspiegel",
         "berliner_zeitung",
         "taz_berlin",
         "rbb24",
+        "nbf",
+        "dsee",
         # scrapers
         "ibb",
         "ilb",
         "bsfz",
         "daks",
-        "nbf",
+        "paritaet_berlin",
+        "diakonie_bb",
         "brandenburg_vorschriften",
     }
     assert expected <= names

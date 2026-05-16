@@ -6,6 +6,7 @@ import typer
 
 from jmnews import __version__
 from jmnews.config import get_settings
+from jmnews.pipeline import run_daemon as _run_daemon
 from jmnews.pipeline import run_once as _run_once
 from jmnews.pipeline import setup_logging
 
@@ -29,9 +30,12 @@ def run_once_cmd() -> None:
 def run_daemon_cmd() -> None:
     """Run scheduled collection + delivery as a long-running process.
 
-    Implemented in Stage 10.
+    Triggers the full pipeline once daily at the configured time
+    (default 06:45 Europe/Berlin). Blocks until SIGINT/SIGTERM.
     """
-    raise typer.Exit(code=2)  # not yet implemented
+    settings = get_settings()
+    setup_logging(settings)
+    _run_daemon(settings)
 
 
 @app.command("version")

@@ -3,10 +3,13 @@
 from __future__ import annotations
 
 import sys
+import zoneinfo
 from datetime import UTC, date, datetime, timedelta
 from pathlib import Path
 from typing import NamedTuple
 
+from apscheduler.schedulers.blocking import BlockingScheduler
+from apscheduler.triggers.cron import CronTrigger
 from loguru import logger
 
 from jmnews.briefing import BriefingGenerator
@@ -117,6 +120,46 @@ def _filter(storage: Storage, settings: Settings, since: datetime) -> int:
     for r in results:
         storage.apply_filter_result(r)
     return len(results)
+
+
+def run_daemon(settings: Settings) -> None:
+    """Block on a scheduler that fires run_once daily at the configured time.
+
+    Per spec the collect job is scheduled at 06:45 Berlin time; the full
+    pipeline (collect → filter → briefing → deliver) typically completes
+    in well under 15 minutes, hitting the 07:00 delivery target.
+    """
+    tz = zoneinfo.ZoneInfo(settings.timezone)
+    sched = BlockingScheduler(timezone=tz)
+    trigger = CronTrigger(
+        hour=settings.collect_hour,
+        minute=settings.collect_minute,
+        timezone=tz,
+    )
+    sched.add_job(
+        _safe_run,
+        trigger=trigger,
+        args=[settings],
+        id="daily_briefing",
+        max_instances=1,
+        coalesce=True,
+        misfire_grace_time=600,  # tolerate up to 10 minutes if the system was busy
+    )
+    logger.info(
+        "Daemon started; daily briefing at {:02d}:{:02d} {}",
+        settings.collect_hour,
+        settings.collect_minute,
+        settings.timezone,
+    )
+    sched.start()
+
+
+def _safe_run(settings: Settings) -> None:
+    """Wrapper so a single failed run does not kill the daemon."""
+    try:
+        run_once(settings)
+    except Exception:  # noqa: BLE001
+        logger.exception("Scheduled run failed; daemon continues")
 
 
 def _briefing_and_deliver(

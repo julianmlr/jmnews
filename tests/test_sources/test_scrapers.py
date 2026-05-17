@@ -107,6 +107,7 @@ def test_enabled_sources_includes_all_configured() -> None:
         "mbjs_brandenburg",
         "jugendhilfeportal",
         "vpk",
+        "vergabe_brandenburg",
         "brandenburg_vorschriften",
     }
     assert expected <= names

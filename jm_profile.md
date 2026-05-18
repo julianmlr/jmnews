@@ -52,6 +52,17 @@ Jugendhilfe in Berlin und im südlichen Brandenburger Speckgürtel.
 - Trägerverbund-Aufrufe (Diakonie, Paritätischer, AWO, Caritas)
 - LIGA Berlin Mitteilungen
 - VPK Brandenburg
+- **Vergabeplattform Brandenburg (vergabemarktplatz.brandenburg.de)**:
+  jede VgV-/UVgO-/SektVO-Ausschreibung mit Bezug zu **Sozialwesen, Jugendhilfe,
+  Eingliederungshilfe, Beratung, Migrationsarbeit, Unterbringung, Pflege oder
+  Betreuung** ist eine Trägerausschreibung und immer HOCH-Priorität —
+  unabhängig vom konkreten Wortlaut im Titel. CPV-Codes 85000000-9 (Gesundheits-
+  und Sozialwesen) und 80000000-4 (Bildung) sind Indikatoren. Beispiele relevanter
+  Leistungen: Sucht- und Schuldnerberatung, Migrationssozialarbeit, Servicepunkt
+  Nachbarschaftshilfe, Aufnahme- und Unterbringungsleistungen, Eingliederungshilfe,
+  Kinderbetreuung, Familienhilfe, Schulsozialarbeit, MabE/Maßnahmen aus dem
+  Programm Bürgerarbeit/Integration.
+- Vergabeplattformen Berlin/Bund analog (vergabe.berlin.de, evergabe-online.de)
 
 ### Rechtsentwicklung
 - SGB VIII Novellen / KJSG
@@ -138,6 +149,12 @@ Jugendhilfe in Berlin und im südlichen Brandenburger Speckgürtel.
 - "Altglienicke" + Bau / Sozial
 - "BRVJug"
 - "BIM" + Erbbaurecht / Vergabe
+- "VgV Ausschreibung" / "UVgO Ausschreibung" / "Teilnahmewettbewerb" +
+  Sozial-/Beratungs-/Betreuungs-/Jugend-/Migrationsleistung
+- "CPV 85" / "CPV 80" (Gesundheits-, Sozial-, Bildungswesen)
+- "Suchtberatung", "Schuldnerberatung", "Migrationssozialarbeit",
+  "Beratungsstelle", "Servicepunkt", "Aufnahmeeinrichtung", "Sozialbetreuung",
+  "Erziehungshilfe", "MabE" — alle in Vergabe-/Ausschreibungskontext
 
 ### Medium-Trigger
 - "freier Träger" + Bezirk
@@ -283,7 +300,7 @@ Bewerte jedes News-Item nach folgenden Bändern:
 - **"ignore" (0-2)**: Ausschlussfilter-Themen (Sport, Promi, Wetter, Werbung), Themen ohne JM-Bezug, generische Politik ohne Berlin/Brandenburg-Trägerwirkung
 - **"context" (3-5)**: NIEDRIG-Themen, PERSÖNLICHE BACKGROUND-THEMEN (Tier 2-5: Steuer, Wegzug Schweiz, Longevity, KI, Makro), Branchentrends ohne direkte Action
 - **"relevant" (6-8)**: MITTEL-Themen, Marktbewegungen Berlin/Brandenburg, Verbandsmeldungen, Personal-/Bauthemen, MEDIUM-Trigger — NUR aus Tier 1 (Jugendhilfe / Kita / IBB-Immobilien)
-- **"action" (9-10)**: HOCH-Themen mit Frist oder direktem JM-Bezug — Trägeraufruf, Fördermittel-Call, Insolvenz im Marktbereich, jede Erwähnung von "Sophien", "Altglienicke" + Sozial, "Treptow-Köpenick Jugendamt", "BRVJug", "Platzausbau Jugend"
+- **"action" (9-10)**: HOCH-Themen mit Frist oder direktem JM-Bezug — Trägeraufruf, Fördermittel-Call, Insolvenz im Marktbereich, jede Erwähnung von "Sophien", "Altglienicke" + Sozial, "Treptow-Köpenick Jugendamt", "BRVJug", "Platzausbau Jugend". **Außerdem immer action**: jede laufende VgV-/UVgO-Ausschreibung aus Berlin oder Brandenburg im Bereich Sozialwesen / Jugendhilfe / Eingliederungshilfe / Beratung / Migration / Unterbringung / Betreuung — auch wenn der Wortlaut technisch ist (z. B. "Beratungsleistungen Sucht- und Schuldnerberatung", "Migrationssozialarbeit", "Servicepunkt Nachbarschaftshilfe"). Das sind potenzielle Auftragsmöglichkeiten für SBW/Sophien Hof.
 
 **Wichtige Disziplin:**
 - Persönliche Background-Themen (Steuerrecht, Schweizer Wegzug, Longevity, KI, Makro) NIEMALS höher als context (5) einstufen — auch wenn sie spannend sind. Die gehören in den HINTERGRUND-Sammel des Briefings, nicht oben rein.

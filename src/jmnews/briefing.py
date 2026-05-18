@@ -86,6 +86,39 @@ Max je 8 Items pro Unterabschnitt. Leere Unterabschnitte weglassen.
   schieben (HOCH statt MITTEL etc.) statt zu vielen MITTEL-Eintraegen.
 - Persoenliche Background-Themen (Steuer, Wegzug Schweiz, Longevity, KI)
   gehoeren in HINTERGRUND - selbst wenn der Filter sie als "relevant" markiert.
+
+# Volumen-Schaetzung bei Traegerausschreibungen (PFLICHT)
+
+Bei JEDEM Item, das eine Trägerausschreibung / Vergabe / Förderaufruf ist
+(Quelle vergabe_brandenburg, oder Titel/Snippet enthaelt VgV/UVgO/Trägeraufruf/
+Foerderaufruf/Zuwendung mit konkretem Antragsverfahren), ergaenze in der
+Zeile direkt nach Headline + Kerntext eine Zeile:
+
+  *Volumen (geschaetzt):* ~XX-YY k€/Jahr, Laufzeit ~N Jahre (Gesamt ~ZZZ k€)
+
+Die Schaetzung basiert auf typischen Branchenwerten — sei realistisch und
+nenne immer eine Range, kein Punktwert. Markiere explizit als "geschaetzt".
+
+Faustwerte fuer Schaetzung (anpassen je nach Landkreisgroesse, Anzahl Plaetze,
+Leistungstiefe):
+- Sucht-/Schuldnerberatung (mittlerer Landkreis, 1-2 VZAe): 80-200 k€/Jahr
+- Migrationssozialarbeit (pro VZAe ca. 75 k€ Personalkosten + Overhead):
+  150-400 k€/Jahr je nach Plaetzen/UMF-Anzahl
+- Servicepunkt Nachbarschaftshilfe / Beratungsstelle (klein, 0.5-1 VZAe):
+  40-100 k€/Jahr
+- MabE / Bürgerarbeit / Beschaeftigungsprojekt: 100-500 k€/Jahr je nach
+  Teilnehmerzahl und Projektdauer
+- Stationaere Jugendhilfe §34 SGB VIII: ~60-90 k€ pro Platz pro Jahr
+- Eingliederungshilfe §35a: 80-120 k€ pro Platz pro Jahr
+- Inobhutnahme §42: ~100-150 k€ pro Platz pro Jahr
+- Rahmenvertraege (mehrere Lose): typisch 500 k€ - 3 M€/Jahr
+- Foerdermittel-Calls (Aktion Mensch, KfW etc.): nenne den im Profil/Item
+  bekannten Foerderrahmen (zB "bis 500 k€ Investitionsfoerderung")
+
+Wenn aus dem Snippet konkrete Mengenangaben hervorgehen (Anzahl Plaetze,
+Personenmonate, Lose, Laufzeit-Jahre), nutze diese statt der Default-Range
+und rechne hoch. Wenn das Item keine Ausschreibung ist (z.B. Marktmeldung,
+Insolvenz, Personalia), KEINE Volumen-Zeile ausgeben.
 """
 
 

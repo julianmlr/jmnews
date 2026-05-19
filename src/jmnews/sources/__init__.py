@@ -12,9 +12,11 @@ from jmnews.sources.diakonie_bb import DiakonieBB
 from jmnews.sources.dsee import DSEE
 from jmnews.sources.ibb import IBB
 from jmnews.sources.ilb import ILB
+from jmnews.sources.insolvenz import Insolvenz
 from jmnews.sources.jugendhilfeportal import Jugendhilfeportal
 from jmnews.sources.mbjs_brandenburg import MBJSBrandenburg
 from jmnews.sources.nbf import NbF
+from jmnews.sources.nexxt_change import NexxtChange
 from jmnews.sources.paritaet_berlin import ParitaetBerlin
 from jmnews.sources.rbb24 import Rbb24
 from jmnews.sources.tagesspiegel import Tagesspiegel
@@ -46,6 +48,8 @@ def enabled_sources() -> list[Source]:
         VPK(),
         VergabeBrandenburg(),
         BrandenburgVorschriften(),
+        Insolvenz(),
+        NexxtChange(),
     ]
 
 
@@ -54,6 +58,7 @@ __all__ = [
     "DSEE",
     "IBB",
     "ILB",
+    "Insolvenz",
     "VPK",
     "BerlinPresseportal",
     "BerlinerZeitung",
@@ -63,6 +68,7 @@ __all__ = [
     "Jugendhilfeportal",
     "MBJSBrandenburg",
     "NbF",
+    "NexxtChange",
     "ParitaetBerlin",
     "Rbb24",
     "Source",

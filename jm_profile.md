@@ -112,10 +112,19 @@ südlichen Brandenburger Speckgürtel, (2) Kita-Trägerschaft Berlin.
 - §57 Abs. 3 AO Cost-Sharing
 
 ### Marktentwicklung und Übernahmen
-- Insolvenzen Träger Jugendhilfe Berlin / Brandenburg
-- Schließungen Wohngruppen Berlin
+- Insolvenzen Träger Jugendhilfe / Kita **bundesweit** (DE) — auch
+  außerhalb Berlin/Brandenburg, da Asset-Deal mit Insolvenzverwalter
+  potenziell überregional möglich (Multi-Site-Skalierung). Pole-Position
+  ist die Eröffnungsbekanntmachung auf insolvenzbekanntmachungen.de
+- Insolvenzen / Schliessungen CH Heime / CEM-Träger
+  (Comunità Educative) — INTEGRAS-Meldungen, langfristige
+  Wegzug-Option-Quelle
+- Schließungen Wohngruppen / Kitas Berlin
 - Trägerwechsel SGB VIII Einrichtungen
 - Nachfolge-Situationen kleine Träger
+- **Verkaufsangebote** in offiziellen Nachfolgebörsen
+  (nexxt-change.org NACE 5,63 Sozialwesen und 5,27 Heime mit
+  Kita-/Jugendhilfe-Filter) — DE-weit, da kaufkraft-basierter Markt
 - M&A Sozialwirtschaft
 
 ## Themenfilter MITTEL (relevante Hintergrundinformation)
@@ -193,6 +202,16 @@ südlichen Brandenburger Speckgürtel, (2) Kita-Trägerschaft Berlin.
 - "VgV Ausschreibung" / "UVgO Ausschreibung" / "Teilnahmewettbewerb" +
   Sozial-/Beratungs-/Betreuungs-/Jugend-/Migrationsleistung
 - "CPV 85" / "CPV 80" (Gesundheits-, Sozial-, Bildungswesen)
+- Quelle `insolvenz` — jede Veröffentlichung mit Schuldname enthaltend
+  Kita / Kinder(haus|heim|hilfe|tag) / Jugend(hilfe|werk|zentrum|wohn) /
+  Erziehung / Familienhilfe / Wohngruppe / Heimerziehung / Pädagog.
+  Eröffnungs- und Sicherungsmaßnahmen-Bekanntmachungen sind action;
+  Verteilungsverzeichnisse / Aufhebungen sind context (Verfahren läuft
+  zu Ende, kein Deal mehr möglich).
+- Quelle `nexxt_change` — jedes Verkaufsangebot Sozialwesen / Kinder /
+  Jugend / Bildung ist action.
+- Quelle `integras` — CH-Schliessungen / Trägerwechsel sind relevant,
+  Fachtagungs-Rückblicke / Newsletter sind context.
 - "Suchtberatung", "Schuldnerberatung", "Migrationssozialarbeit",
   "Beratungsstelle", "Servicepunkt", "Aufnahmeeinrichtung", "Sozialbetreuung",
   "Erziehungshilfe", "MabE" — alle in Vergabe-/Ausschreibungskontext

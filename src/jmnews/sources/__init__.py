@@ -13,6 +13,7 @@ from jmnews.sources.dsee import DSEE
 from jmnews.sources.ibb import IBB
 from jmnews.sources.ilb import ILB
 from jmnews.sources.insolvenz import Insolvenz
+from jmnews.sources.integras import Integras
 from jmnews.sources.jugendhilfeportal import Jugendhilfeportal
 from jmnews.sources.mbjs_brandenburg import MBJSBrandenburg
 from jmnews.sources.nbf import NbF
@@ -50,6 +51,7 @@ def enabled_sources() -> list[Source]:
         BrandenburgVorschriften(),
         Insolvenz(),
         NexxtChange(),
+        Integras(),
     ]
 
 
@@ -59,6 +61,7 @@ __all__ = [
     "IBB",
     "ILB",
     "Insolvenz",
+    "Integras",
     "VPK",
     "BerlinPresseportal",
     "BerlinerZeitung",

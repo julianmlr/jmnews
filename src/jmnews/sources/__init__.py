@@ -3,22 +3,28 @@
 from __future__ import annotations
 
 from jmnews.sources.base import Source
+from jmnews.sources.baulinks import Baulinks
 from jmnews.sources.berlin_presseportal import BerlinPresseportal
 from jmnews.sources.berliner_zeitung import BerlinerZeitung
 from jmnews.sources.brandenburg_vorschriften import BrandenburgVorschriften
 from jmnews.sources.bsfz import BSFZ
+from jmnews.sources.creditreform import Creditreform
 from jmnews.sources.daks import DaKS
 from jmnews.sources.diakonie_bb import DiakonieBB
 from jmnews.sources.dsee import DSEE
+from jmnews.sources.eric_topol import EricTopol
+from jmnews.sources.hdb_presse import HDBPresse
 from jmnews.sources.ibb import IBB
 from jmnews.sources.ilb import ILB
 from jmnews.sources.insolvenz import Insolvenz
 from jmnews.sources.integras import Integras
 from jmnews.sources.jugendhilfeportal import Jugendhilfeportal
+from jmnews.sources.lifespan_io import LifespanIo
 from jmnews.sources.mbjs_brandenburg import MBJSBrandenburg
 from jmnews.sources.nbf import NbF
 from jmnews.sources.nexxt_change import NexxtChange
 from jmnews.sources.paritaet_berlin import ParitaetBerlin
+from jmnews.sources.peter_attia import PeterAttia
 from jmnews.sources.rbb24 import Rbb24
 from jmnews.sources.tagesspiegel import Tagesspiegel
 from jmnews.sources.taz_berlin import TazBerlin
@@ -52,6 +58,14 @@ def enabled_sources() -> list[Source]:
         Insolvenz(),
         NexxtChange(),
         Integras(),
+        # Longevity (Tier-3 Background-Themen)
+        PeterAttia(),
+        LifespanIo(),
+        EricTopol(),
+        # Bau-Software / Liquiditätstool competitive intelligence
+        Baulinks(),
+        HDBPresse(),
+        Creditreform(),
     ]
 
 
@@ -63,16 +77,22 @@ __all__ = [
     "Insolvenz",
     "Integras",
     "VPK",
+    "Baulinks",
     "BerlinPresseportal",
     "BerlinerZeitung",
     "BrandenburgVorschriften",
+    "Creditreform",
     "DaKS",
     "DiakonieBB",
+    "EricTopol",
+    "HDBPresse",
     "Jugendhilfeportal",
+    "LifespanIo",
     "MBJSBrandenburg",
     "NbF",
     "NexxtChange",
     "ParitaetBerlin",
+    "PeterAttia",
     "Rbb24",
     "Source",
     "Tagesspiegel",

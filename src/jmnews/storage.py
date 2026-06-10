@@ -52,6 +52,15 @@ CREATE TABLE IF NOT EXISTS runs (
     status TEXT NOT NULL,
     error TEXT
 );
+
+CREATE TABLE IF NOT EXISTS chat_messages (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    chat_id INTEGER NOT NULL,
+    ts TEXT NOT NULL,
+    role TEXT NOT NULL,
+    content TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_chat_messages_chat ON chat_messages(chat_id, ts);
 """
 
 
@@ -258,6 +267,61 @@ class Storage:
         with self._conn() as conn:
             row = conn.execute("SELECT * FROM runs WHERE id = ?", (run_id,)).fetchone()
         return _row_to_run(row) if row else None
+
+    # ---------- chat ----------
+
+    def append_chat(self, chat_id: int, role: str, content: str) -> None:
+        with self._conn() as conn:
+            conn.execute(
+                "INSERT INTO chat_messages (chat_id, ts, role, content) VALUES (?, ?, ?, ?)",
+                (chat_id, _iso(datetime.now(UTC)), role, content),
+            )
+
+    def recent_chat(self, chat_id: int, limit: int = 20) -> list[tuple[str, str]]:
+        """Return [(role, content), ...] in chronological order, most recent `limit` messages."""
+        with self._conn() as conn:
+            rows = conn.execute(
+                "SELECT role, content FROM chat_messages WHERE chat_id = ? "
+                "ORDER BY id DESC LIMIT ?",
+                (chat_id, limit),
+            ).fetchall()
+        return [(r["role"], r["content"]) for r in reversed(rows)]
+
+    def clear_chat(self, chat_id: int) -> int:
+        with self._conn() as conn:
+            cur = conn.execute("DELETE FROM chat_messages WHERE chat_id = ?", (chat_id,))
+            return cur.rowcount
+
+    def search_items(
+        self,
+        query: str | None = None,
+        source: str | None = None,
+        category: str | None = None,
+        since_days: int = 30,
+        limit: int = 20,
+    ) -> list[NewsItem]:
+        """Full-text-ish search over items, used by the chat-bot's tool."""
+        since = datetime.now(UTC) - timedelta(days=since_days)
+        where = ["published_at >= ?"]
+        params: list[Any] = [_iso(since)]
+        if query:
+            where.append("(title LIKE ? OR snippet LIKE ?)")
+            params += [f"%{query}%", f"%{query}%"]
+        if source:
+            where.append("source = ?")
+            params.append(source)
+        if category:
+            where.append("category = ?")
+            params.append(category)
+        sql = (
+            "SELECT * FROM items WHERE "
+            + " AND ".join(where)
+            + " ORDER BY score DESC, published_at DESC LIMIT ?"
+        )
+        params.append(limit)
+        with self._conn() as conn:
+            rows = conn.execute(sql, params).fetchall()
+        return [_row_to_item(r) for r in rows]
 
     # ---------- backup ----------
 

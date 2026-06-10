@@ -151,6 +151,16 @@ def run_daemon(settings: Settings) -> None:
         settings.collect_minute,
         settings.timezone,
     )
+
+    # Start the Telegram chat bot in a worker thread (no-op if disabled
+    # or if credentials are missing). The scheduler continues to block
+    # the main thread; the chat thread is a daemon so it dies with us.
+    from jmnews import chat
+    from jmnews.storage import Storage
+
+    storage = Storage(settings.db_path)
+    chat.run_in_thread(settings, storage)
+
     sched.start()
 
 

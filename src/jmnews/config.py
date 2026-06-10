@@ -23,6 +23,9 @@ class Settings(BaseSettings):
     briefing_model: str = Field(
         default="claude-sonnet-4-6", alias="JMNEWS_BRIEFING_MODEL"
     )
+    chat_model: str = Field(
+        default="claude-sonnet-4-6", alias="JMNEWS_CHAT_MODEL"
+    )
 
     # Telegram
     telegram_bot_token: str = Field(default="", alias="TELEGRAM_BOT_TOKEN")
@@ -43,6 +46,11 @@ class Settings(BaseSettings):
     collect_minute: int = Field(default=45, alias="JMNEWS_COLLECT_MINUTE")
     deliver_hour: int = Field(default=7, alias="JMNEWS_DELIVER_HOUR")
     deliver_minute: int = Field(default=0, alias="JMNEWS_DELIVER_MINUTE")
+
+    # Chat
+    chat_enabled: bool = Field(default=True, alias="JMNEWS_CHAT_ENABLED")
+    chat_history_limit: int = Field(default=20, alias="JMNEWS_CHAT_HISTORY")
+    chat_max_tokens: int = Field(default=4096, alias="JMNEWS_CHAT_MAX_TOKENS")
 
     log_level: str = Field(default="INFO", alias="JMNEWS_LOG_LEVEL")
 

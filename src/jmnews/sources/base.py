@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import re
+import time
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 from datetime import UTC, datetime
@@ -109,6 +110,11 @@ def parse_datetime(value: Any) -> datetime:
 class RSSSource(Source):
     """Reusable RSS implementation. Subclasses provide `feed_urls()`."""
 
+    # Seconds to wait between multiple feed requests. berlin.de answers
+    # rapid-fire feed hits with "429 Calm down", so sources that fan out
+    # over several feed URLs on the same host should set this > 0.
+    request_delay: float = 0.0
+
     @abstractmethod
     def feed_urls(self) -> list[str]:
         ...
@@ -116,7 +122,9 @@ class RSSSource(Source):
     def fetch(self, since: datetime) -> list[NewsItem]:
         out: list[NewsItem] = []
         seen: set[str] = set()
-        for url in self.feed_urls():
+        for index, url in enumerate(self.feed_urls()):
+            if index > 0 and self.request_delay > 0:
+                time.sleep(self.request_delay)
             try:
                 raw = http_get(url)
             except Exception as exc:  # noqa: BLE001

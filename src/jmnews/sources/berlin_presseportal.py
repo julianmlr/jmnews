@@ -32,6 +32,8 @@ BEZIRKE_INSTITUTIONS: tuple[str, ...] = (
     "Bezirksamt Lichtenberg",
     "Bezirksamt Neukölln",
     "Bezirksamt Mitte",
+    # Profil-Priorität für Kita-Trägervergaben (AG-78-Trägerverbund).
+    "Bezirksamt Tempelhof-Schöneberg",
 )
 DEFAULT_INSTITUTION_GROUPS: tuple[tuple[str, ...], ...] = (
     SENATE_INSTITUTIONS,
@@ -54,6 +56,7 @@ def build_feed_url(institutions: tuple[str, ...] = DEFAULT_INSTITUTIONS) -> str:
 
 class BerlinPresseportal(RSSSource):
     name = "berlin_presseportal"
+    request_delay = 3.0  # berlin.de answers rapid feed hits with 429
 
     def __init__(
         self,

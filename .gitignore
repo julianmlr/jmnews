@@ -17,3 +17,6 @@ data/*.db.*
 data/briefings/*.md
 data/logs/
 !data/briefings/.gitkeep
+
+# uv-Artefakt lokaler Dev-Umgebungen; Deploy baut via pip (Dockerfile)
+uv.lock

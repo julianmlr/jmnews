@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 import time
 from datetime import UTC, date, datetime
 from pathlib import Path
@@ -122,6 +123,77 @@ Insolvenz, Personalia), KEINE Volumen-Zeile ausgeben.
 """
 
 
+# ---------------------------------------------------------------------------
+# Trägeraufruf-Alarm: deterministic, NOT LLM-dependent. A Trägeraufruf must
+# never slip through unmarked, so detection + rendering happen in code and
+# the section is injected into whatever markdown the LLM (or the fallback)
+# produced. Telegram splits on H2, so the alarm arrives as its own message.
+# ---------------------------------------------------------------------------
+
+# Sources whose items are Trägeraufrufe/Ausschreibungen by construction
+# (search-keyword feed / dedicated Ausschreibungs-Seite).
+_TRAEGERAUFRUF_SOURCES: tuple[str, ...] = (
+    "berlin_traegeraufrufe",
+    "senbjf_ausschreibungen",
+)
+
+# `_AE`/`_OE` cover Umlaut and ASCII digraph spellings (Trägeraufruf /
+# Traegeraufruf, Förderaufruf / Foerderaufruf).
+_AE = r"(?:ä|ae|a)"
+_OE = r"(?:ö|oe|o)"
+_TRAEGERAUFRUF_RE = re.compile(
+    rf"tr{_AE}geraufruf|interessenbekundung|f{_OE}rderaufruf|tr{_AE}gerauswahl"
+    rf"|aufruf zur angebotsabgabe|tr{_AE}ger gesucht|sucht (?:einen )?tr{_AE}ger"
+    r"|\bIBV\b",
+    re.IGNORECASE,
+)
+
+
+def _is_traegeraufruf(item: NewsItem) -> bool:
+    if item.source in _TRAEGERAUFRUF_SOURCES:
+        return True
+    return _TRAEGERAUFRUF_RE.search(f"{item.title} {item.snippet}") is not None
+
+
+def _traegeraufruf_items(groups: dict[str, list[NewsItem]]) -> list[NewsItem]:
+    """Trägeraufrufe across all briefing sections (action first)."""
+    out: list[NewsItem] = []
+    for key in ("action", "relevant", "context"):
+        out.extend(i for i in groups.get(key, []) if _is_traegeraufruf(i))
+    return out
+
+
+_ALARM_BAR = "🚨🔴🚨🔴🚨🔴🚨🔴🚨🔴🚨🔴🚨🔴"
+
+
+def _render_traegeraufruf_alarm(items: list[NewsItem]) -> str:
+    n = len(items)
+    plural = "TRÄGERAUFRUFE" if n > 1 else "TRÄGERAUFRUF"
+    lines = [
+        f"## ‼️‼️ {n} {plural} HEUTE ‼️‼️",
+        _ALARM_BAR,
+        f"**⚠️ ACHTUNG: {n} {plural} IM BRIEFING — SOFORT FRIST PRÜFEN! ⚠️**",
+        "",
+    ]
+    for it in items:
+        lines.append(f"- 🔴🔴 **{it.title.upper()}** 🔴🔴")
+        # No bold around the link: the Telegram renderer does not resolve
+        # nested placeholder substitutions (link inside bold).
+        lines.append(f"  👉 [{it.source}]({it.url})")
+    lines.append("")
+    lines.append(_ALARM_BAR)
+    return "\n".join(lines)
+
+
+def _inject_alarm(markdown: str, alarm: str) -> str:
+    """Insert the alarm section directly after the H1 (or prepend)."""
+    lines = markdown.splitlines()
+    for idx, line in enumerate(lines):
+        if line.startswith("# "):
+            return "\n".join([*lines[: idx + 1], "", alarm, "", *lines[idx + 1 :]])
+    return f"{alarm}\n\n{markdown}"
+
+
 class BriefingGenerator:
     """Renders the daily briefing using Claude Sonnet, with a deterministic fallback."""
 
@@ -156,6 +228,13 @@ class BriefingGenerator:
         if markdown is None:
             logger.warning("Sonnet briefing failed; using deterministic fallback")
             markdown = _render_fallback(groups, ignored_count, briefing_date)
+
+        # Deterministic Trägeraufruf alarm — injected in code so it can
+        # never be dropped by the LLM.
+        aufrufe = _traegeraufruf_items(groups)
+        if aufrufe:
+            logger.info("Trägeraufruf-Alarm: {} item(s)", len(aufrufe))
+            markdown = _inject_alarm(markdown, _render_traegeraufruf_alarm(aufrufe))
 
         return Briefing(
             id=briefing_date.isoformat(),

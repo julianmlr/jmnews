@@ -128,3 +128,90 @@ def test_generate_handles_no_items(tmp_path: Path) -> None:
 
     assert briefing.item_count == 0
     assert briefing.markdown.startswith("# JM-Briefing")
+
+
+# ---------------------------------------------------------------------------
+# Trägeraufruf-Alarm
+# ---------------------------------------------------------------------------
+
+
+def test_is_traegeraufruf_matches_keywords() -> None:
+    from jmnews.briefing import _is_traegeraufruf
+
+    hit = _item(
+        "https://e.com/ibv",
+        title="Trägeraufruf für ein Interessenbekundungsverfahren (IBV)",
+    )
+    umlautfrei = _item("https://e.com/f", title="Foerderaufruf 2026 gestartet")
+    miss = _item("https://e.com/x", title="Neue Kita eröffnet in Pankow")
+    assert _is_traegeraufruf(hit)
+    assert _is_traegeraufruf(umlautfrei)
+    assert not _is_traegeraufruf(miss)
+
+
+def test_is_traegeraufruf_trusts_dedicated_sources() -> None:
+    from jmnews.briefing import _is_traegeraufruf
+
+    item = _item("https://e.com/y", title="Völlig neutraler Titel")
+    item = item.model_copy(update={"source": "berlin_traegeraufrufe"})
+    assert _is_traegeraufruf(item)
+
+
+def test_generate_injects_alarm_for_traegeraufruf(tmp_path: Path) -> None:
+    a = _item(
+        "https://e.com/a",
+        category="action",
+        score=9,
+        title="Trägeraufruf Schulsozialarbeit Neukölln",
+    )
+    client = MagicMock()
+    client.messages.create.return_value = _fake_response(
+        "# JM-Briefing 2026-05-16\n\n## 🚨 DRINGEND\n- Item"
+    )
+
+    gen = BriefingGenerator(_settings(tmp_path), client=client)
+    briefing = gen.generate([a], briefing_date=date(2026, 5, 16))
+
+    lines = briefing.markdown.splitlines()
+    # Alarm section sits directly after the H1 and before DRINGEND
+    assert lines[0].startswith("# JM-Briefing")
+    alarm_idx = next(i for i, ln in enumerate(lines) if "TRÄGERAUFRUF" in ln)
+    dringend_idx = next(i for i, ln in enumerate(lines) if "DRINGEND" in ln)
+    assert alarm_idx < dringend_idx
+    assert "‼️" in briefing.markdown
+    assert "🚨" in briefing.markdown
+    assert "TRÄGERAUFRUF SCHULSOZIALARBEIT NEUKÖLLN" in briefing.markdown
+    assert "SOFORT FRIST PRÜFEN" in briefing.markdown
+
+
+def test_generate_no_alarm_without_traegeraufruf(tmp_path: Path) -> None:
+    a = _item("https://e.com/a", category="action", score=9, title="Tarifabschluss")
+    client = MagicMock()
+    client.messages.create.return_value = _fake_response(
+        "# JM-Briefing 2026-05-16\n\n## 🚨 DRINGEND\n- Item"
+    )
+
+    gen = BriefingGenerator(_settings(tmp_path), client=client)
+    briefing = gen.generate([a], briefing_date=date(2026, 5, 16))
+
+    assert "SOFORT FRIST PRÜFEN" not in briefing.markdown
+
+
+def test_alarm_present_even_on_llm_fallback(tmp_path: Path, monkeypatch) -> None:
+    import anthropic as anth
+
+    monkeypatch.setattr("jmnews.briefing.time.sleep", lambda _s: None)
+    a = _item(
+        "https://e.com/a",
+        category="action",
+        score=9,
+        title="Interessenbekundungsverfahren Familienzentrum",
+    )
+    client = MagicMock()
+    err = anth.APIConnectionError(request=MagicMock())
+    client.messages.create.side_effect = [err, err, err]
+
+    gen = BriefingGenerator(_settings(tmp_path), client=client)
+    briefing = gen.generate([a], briefing_date=date(2026, 5, 16))
+
+    assert "SOFORT FRIST PRÜFEN" in briefing.markdown

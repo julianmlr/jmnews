@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from jmnews.sources.base import Source
 from jmnews.sources.baulinks import Baulinks
+from jmnews.sources.berlin_gewaltschutz import BerlinGewaltschutz
 from jmnews.sources.berlin_jugendaemter import (
     SenBJFAusschreibungen,
     jugendamt_sources,
@@ -33,6 +34,7 @@ from jmnews.sources.peter_attia import PeterAttia
 from jmnews.sources.rbb24 import Rbb24
 from jmnews.sources.tagesspiegel import Tagesspiegel
 from jmnews.sources.taz_berlin import TazBerlin
+from jmnews.sources.vergabe_berlin import VergabeBerlin
 from jmnews.sources.vergabe_brandenburg import VergabeBrandenburg
 from jmnews.sources.vpk import VPK
 
@@ -43,6 +45,7 @@ def enabled_sources() -> list[Source]:
         # RSS / feeds / sitemap
         BerlinPresseportal(),
         BerlinTraegeraufrufe(),
+        BerlinGewaltschutz(),
         Tagesspiegel(),
         BerlinerZeitung(),
         TazBerlin(),
@@ -59,6 +62,7 @@ def enabled_sources() -> list[Source]:
         MBJSBrandenburg(),
         Jugendhilfeportal(),
         VPK(),
+        VergabeBerlin(),
         VergabeBrandenburg(),
         SenBJFAusschreibungen(),
         *jugendamt_sources(),
@@ -86,6 +90,7 @@ __all__ = [
     "Integras",
     "VPK",
     "Baulinks",
+    "BerlinGewaltschutz",
     "BerlinPresseportal",
     "BerlinTraegeraufrufe",
     "BerlinerZeitung",
@@ -107,6 +112,7 @@ __all__ = [
     "Source",
     "Tagesspiegel",
     "TazBerlin",
+    "VergabeBerlin",
     "VergabeBrandenburg",
     "enabled_sources",
     "jugendamt_sources",

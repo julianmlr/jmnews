@@ -121,7 +121,12 @@ Branche (eigene Produktentwicklung, läuft parallel zur Kern-Trägerarbeit).
   Nachbarschaftshilfe, Aufnahme- und Unterbringungsleistungen, Eingliederungshilfe,
   Kinderbetreuung, Familienhilfe, Schulsozialarbeit, MabE/Maßnahmen aus dem
   Programm Bürgerarbeit/Integration.
-- Vergabeplattformen Berlin/Bund analog (vergabe.berlin.de, evergabe-online.de)
+- **Vergabeplattform Berlin (berlin.de/vergabeplattform)** — Quelle `vergabe_berlin`:
+  öffentliche Bekanntmachungen des Landes, vorgefiltert auf Sozial-/Jugend-/
+  Kita-/Pflege-/Frauenhaus-Leistungen. Analog zur Brandenburg-Regel: jede
+  VgV-/UVgO-Ausschreibung mit Sozialbezug ist HOCH-Priorität, unabhängig vom
+  Wortlaut. Detail-Links zeigen auf meinauftrag.rib.de.
+- Weitere Vergabeplattformen Bund analog (evergabe-online.de)
 
 ### Rechtsentwicklung
 - SGB VIII Novellen / KJSG
@@ -202,6 +207,15 @@ Branche (eigene Produktentwicklung, läuft parallel zur Kern-Trägerarbeit).
 - Beteiligungs- und Beschwerdestrukturen
 - Anti-Gewalt-Konzepte
 
+### Gewaltschutz und Frauenhäuser (Expansionsfeld)
+- Berliner Frauenhaus-Ausbau / Gesamtberliner Bedarfsplanung
+- Frauen- und Kinderschutzhäuser: Träger-/Betreiberauswahl, IBV, Förderaufrufe
+- Zufluchtswohnungen, Fachberatungsstellen häusliche Gewalt
+- SenASGIVA Gleichstellung / Gewaltschutz-Ausschreibungen
+- Quelle `berlin_gewaltschutz` — Themen-Feed: *Ausschreibungen/IBV* sind
+  `action` (Betreiberauswahl ist ein Trägeraufruf), reine Aktions-/Gedenk-/
+  Kampagnen-Meldungen (z.B. "Sichere Handys im Frauenhaus") sind `context`.
+
 ## Themenfilter NIEDRIG (nur Headlines)
 - Bundespolitik Familie/Soziales allgemein (Berlin-Bezug = höher)
 - Bundes-Kita-Politik soweit ohne direkten Berliner Träger-Effekt
@@ -263,6 +277,9 @@ Branche (eigene Produktentwicklung, läuft parallel zur Kern-Trägerarbeit).
 - "Suchtberatung", "Schuldnerberatung", "Migrationssozialarbeit",
   "Beratungsstelle", "Servicepunkt", "Aufnahmeeinrichtung", "Sozialbetreuung",
   "Erziehungshilfe", "MabE" — alle in Vergabe-/Ausschreibungskontext
+- "Frauenhaus" / "Frauen- und Kinderschutzhaus" / "Gewaltschutz" /
+  "Zufluchtswohnung" — im Ausschreibungs-/IBV-/Betreiberauswahl-Kontext
+  High-Trigger; reine News (Kampagnen, Gedenktage, Einweihungen) nur `context`
 - "KitaFöG" / "VOKitaFöG" (Berliner Kita-Gesetz)
 - "ISBJ" / "Kita-Voucher" / "Kita-Gutschein" Berlin
 - "Kitaaufsicht" Berlin / "SenBJF" + Kita

@@ -251,8 +251,12 @@ Branche (eigene Produktentwicklung, läuft parallel zur Kern-Trägerarbeit).
   Sozial-/Beratungs-/Betreuungs-/Jugend-/Migrationsleistung
 - "CPV 85" / "CPV 80" (Gesundheits-, Sozial-, Bildungswesen)
 - Quelle `insolvenz` — jede Veröffentlichung mit Schuldname enthaltend
-  Kita / Kinder(haus|heim|hilfe|tag) / Jugend(hilfe|werk|zentrum|wohn) /
-  Erziehung / Familienhilfe / Wohngruppe / Heimerziehung / Pädagog.
+  Kita / Kinder(haus|heim|hilfe|tag|dorf|krippe) / Jugend(hilfe|werk|zentrum|
+  wohn|dorf) / Erziehung(shilfe|sstelle|sbeistand) / Familienhilfe /
+  Wohngruppe(n) / Heimerziehung / (Sozial-/Heil-)Pädagog / Inobhutnahme.
+  Auch neutral benannte Träger werden erfasst, soweit der Name eines dieser
+  Stems trägt (Namens-basierte Portalsuche — reine Fantasienamen ohne
+  Sektor-Stichwort bleiben ein Blindfleck, dafür `nexxt_change` + News).
   Eröffnungs- und Sicherungsmaßnahmen-Bekanntmachungen sind action;
   Verteilungsverzeichnisse / Aufhebungen sind context (Verfahren läuft
   zu Ende, kein Deal mehr möglich).

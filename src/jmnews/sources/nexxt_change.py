@@ -38,15 +38,26 @@ NACE_FILTERS = (
 
 # Pflege/Senioren-Inserate aus NACE [5,27] sind irrelevant — wir wollen
 # nur Kinderheime, Jugendhilfe-Einrichtungen, Kitas.
-_RELEVANT_TOKENS = re.compile(
-    r"\b("
-    r"kita|kindertag|kindergarten|krippe|hort|"
-    r"kinderhaus|kinderheim|jugendhilfe|jugendwohn|"
-    r"erziehung|familienzentrum|tagespflege|"
-    r"bildungseinrichtung|grundschule"
-    r")\b",
-    re.IGNORECASE,
+#
+# PREFIX-Match (nur führendes \b) wie bei `insolvenz`, damit Komposita/Plurale
+# ("Wohngruppen", "Kindertagesstätte", "Sozialpädagogisches") mitmatchen.
+_RELEVANT_STEMS = (
+    "kita", "kindertag", "kindergarten", "kinderkrippe",
+    "kinderhaus", "kinderheim", "kinderdorf",
+    "jugendhilfe", "jugendwohn", "jugenddorf", "heimerziehung",
+    "erziehung", "wohngrupp", "familienzentrum", "tagespflege",
+    "sozialpädagog", "heilpädagog", "inobhutnahme",
+    "bildungseinrichtung", "grundschule",
 )
+_RELEVANT_TOKENS = re.compile(
+    r"\b(?:" + "|".join(_RELEVANT_STEMS) + r")", re.IGNORECASE
+)
+# Kurze/mehrdeutige Tokens brauchen die abschließende Wortgrenze.
+_RELEVANT_SHORT = re.compile(r"\b(?:hort|krippe)\b", re.IGNORECASE)
+
+
+def _is_relevant(text: str) -> bool:
+    return bool(_RELEVANT_TOKENS.search(text) or _RELEVANT_SHORT.search(text))
 _PFLEGE_NOISE = re.compile(
     r"\b(seniorenheim|pflegeheim|pflegeeinrichtung|altenheim|"
     r"betreutes\s+wohnen|alkoholiker)\b",
@@ -159,10 +170,10 @@ class NexxtChange(Source):
             # Pflege/Senioren noise.
             if (
                 ("27" in nace_label.lower() or "heime" in nace_label.lower())
-                and not _RELEVANT_TOKENS.search(full_text)
+                and not _is_relevant(full_text)
             ):
                 continue
-            if _PFLEGE_NOISE.search(full_text) and not _RELEVANT_TOKENS.search(full_text):
+            if _PFLEGE_NOISE.search(full_text) and not _is_relevant(full_text):
                 continue
 
             m = _DATE_RE.search(full_text)

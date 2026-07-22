@@ -1,10 +1,11 @@
 """Bundesweites Insolvenzportal — early M&A signal for Kita / Jugendhilfe Träger.
 
 `neu.insolvenzbekanntmachungen.de` is the official portal of all German
-Insolvenzgerichte. We POST four wildcard searches per run (`*Kita*`,
-`*Kinder*`, `*Jugend*`, `*Erzieh*`) covering the last 30 days, merge the
-result tables, and apply a conservative client-side filter to drop false
-positives (Familiennamen wie "Kindermann", Möbel/Spielzeug/Zahnpflege etc.).
+Insolvenzgerichte. We POST one wildcard search per WILDCARDS entry per run
+(`*Kita*`, `*Kinder*`, `*Wohngrupp*`, `*Pädagog*` …) covering the last 30
+days, merge the result tables, and apply a conservative client-side stem
+filter to drop false positives (Familiennamen wie "Kindermann",
+Möbel/Spielzeug/Zahnpflege etc.).
 
 Insolvency proceedings against social-sector Träger are an early signal:
 SBW/Sophien Hof can approach the Insolvenzverwalter for asset-deal
@@ -37,27 +38,41 @@ from jmnews.sources.base import HTTP_TIMEOUT, USER_AGENT, Source, parse_datetime
 BASE = "https://neu.insolvenzbekanntmachungen.de"
 SEARCH_URL = f"{BASE}/ap/suche.jsf"
 
-WILDCARDS = ("*Kita*", "*Kinder*", "*Jugend*", "*Erzieh*", "*Familien*", "*Sophien*")
+# Name-based portal search. `*Erzieh*` already catches "Heimerziehung",
+# `*Kinder*` catches "Kinderdorf/-haus/-heim". `*Wohngrupp*` and `*Pädagog*`
+# add the neutrally-named stationäre-Jugendhilfe operators ("Wohngruppen …
+# gGmbH", "Sozialpädagogisches Zentrum …") that carry none of the other stems.
+WILDCARDS = (
+    "*Kita*", "*Kinder*", "*Jugend*", "*Erzieh*", "*Familien*",
+    "*Wohngrupp*", "*Pädagog*", "*Sophien*",
+)
 LOOKBACK_DAYS = 30
 
-# Schuldnername muss mindestens eines dieser Tokens enthalten, damit das
-# Item überhaupt durchgereicht wird. Die JSF-Suche matcht stumpf auf
-# Substring — "Kindermöbel", "Batkitar" (Familienname) etc. landen sonst
-# als false positives im Briefing.
-_RELEVANT_TOKENS = re.compile(
-    r"\b("
-    r"kita|kindertag|kindertages|kindergarten|krippe|hort|"
-    r"kinderhaus|kinderheim|kinderhilfe|kinderbetreuung|"
-    r"jugendhilfe|jugendamt|jugendhaus|jugendwerk|jugendzentrum|jugendwohn|"
-    r"jugendclub|jugendtreff|jugendsozial|jugendförder|"
-    r"erziehungshilfe|erziehungsstelle|erziehung\s|pädagog|"
-    r"wohngruppe|familienzentrum|familienhilfe|familienpflege|familienservice|"
-    r"familienberatung|tagesstätte|tagespflege|"
-    r"sozialpädagog|integrationshilfe|heimerziehung|"
-    r"sophien|sophiechen"
-    r")\b",
-    re.IGNORECASE,
+# Schuldnername muss mindestens eines dieser Stems enthalten, damit das Item
+# durchgereicht wird — die JSF-Suche matcht stumpf auf Substring, "Kindermöbel"
+# / "Batkitar" (Familienname) landen sonst als false positives im Briefing.
+#
+# PREFIX-Match (nur führendes \b, KEIN abschließendes): deutsche Komposita wie
+# "Kindertagesstätte", "Wohngruppen" (Plural), "Sozialpädagogisches" fielen mit
+# abschließender Wortgrenze sonst durch (der Stem endet mitten im Wort).
+_RELEVANT_STEMS = (
+    "kita", "kindertag", "kindergarten", "kinderkrippe",
+    "kinderhaus", "kinderheim", "kinderhilfe", "kinderbetreuung", "kinderdorf",
+    "jugendhilfe", "jugendamt", "jugendhaus", "jugendwerk", "jugendzentrum",
+    "jugendwohn", "jugendclub", "jugendtreff", "jugendsozial", "jugendförder",
+    "jugenddorf",
+    "erziehungshilfe", "erziehungsstelle", "erziehungsbeistand", "heimerziehung",
+    "wohngrupp", "familienzentrum", "familienhilfe", "familienpflege",
+    "familienservice", "familienberatung", "tagesstätte", "tagespflege",
+    "sozialpädagog", "heilpädagog", "pädagog", "integrationshilfe",
+    "inobhutnahme", "sophien", "sophiechen",
 )
+_RELEVANT_TOKENS = re.compile(
+    r"\b(?:" + "|".join(_RELEVANT_STEMS) + r")", re.IGNORECASE
+)
+# Kurze/mehrdeutige Tokens brauchen die abschließende Wortgrenze, sonst matchen
+# sie Fremdwörter ("Hortensienweg", "Krippenstall").
+_RELEVANT_SHORT = re.compile(r"\b(?:hort|krippe)\b", re.IGNORECASE)
 
 # Negativliste — Branchen, die zufällig Stichworte enthalten aber für
 # Träger-Übernahmen irrelevant sind.
@@ -183,7 +198,7 @@ class Insolvenz(Source):
                 for w in ("gmbh", "e.v.", "gemeinnützig", "stiftung", "ug ", "ag")
             ):
                 return None
-        if not _RELEVANT_TOKENS.search(schuldner):
+        if not (_RELEVANT_TOKENS.search(schuldner) or _RELEVANT_SHORT.search(schuldner)):
             return None
         if _EXCLUDE_TOKENS.search(schuldner):
             return None

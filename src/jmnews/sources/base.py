@@ -69,6 +69,11 @@ _DE_MONTHS: dict[str, str] = {
 # like "Pressemitteilung vom 22.04.2026" that dateutil can't parse.
 _DE_DATE_RE = re.compile(r"\b(\d{1,2}\.\d{1,2}\.\d{4})\b")
 
+# ISO-8601 dates (YYYY-MM-DD, e.g. HTML `datetime` attributes) are
+# unambiguous and must NOT get dayfirst treatment — "2026-07-06" would
+# otherwise flip to 6 July → 7 June whenever both fields are <= 12.
+_ISO_DATE_RE = re.compile(r"^\s*\d{4}-\d{2}-\d{2}([ T]|$)")
+
 
 def _normalize_german_months(s: str) -> str:
     out = s
@@ -88,8 +93,10 @@ def parse_datetime(value: Any) -> datetime:
         return value if value.tzinfo else value.replace(tzinfo=UTC)
     if isinstance(value, str) and value.strip():
         normalized = _normalize_german_months(value)
+        # ISO dates are day-last; everything else here is German day-first.
+        dayfirst = _ISO_DATE_RE.match(normalized) is None
         try:
-            dt = dateparser.parse(normalized, dayfirst=True)
+            dt = dateparser.parse(normalized, dayfirst=dayfirst)
             if dt is not None:
                 return dt if dt.tzinfo else dt.replace(tzinfo=UTC)
         except (ValueError, TypeError):

@@ -191,15 +191,19 @@ Branche (eigene Produktentwicklung, läuft parallel zur Kern-Trägerarbeit).
 - Stadt und Landkreis Konstanz (Singen, Radolfzell, Stockach, Engen)
 - Bodenseekreis (Friedrichshafen, Überlingen, Markdorf, Meersburg)
 - Landkreis Ravensburg / Sigmaringen (angrenzend)
-- KVJS Baden-Württemberg (Landesjugendamt / Heimaufsicht BW): Betriebs-
-  erlaubnis §45 SGB VIII, Aufsicht über stationäre Jugendhilfe
+- Quelle `kvjs` — KVJS Baden-Württemberg (Landesjugendamt / Heimaufsicht BW):
+  Betriebserlaubnis §45 SGB VIII, Aufsicht über stationäre Jugendhilfe,
+  Trägeranerkennung, KiTaG-Fragen. Regulatorische Meldungen sind `relevant`.
+- Quelle `suedkurier` — Regionalzeitung Kreis Konstanz, vorgefiltert auf
+  Träger-/Heim-/Kita-/Jugendamts-/Kinderschutz-Themen der Bodenseeregion.
 - KiTaG Baden-Württemberg (Kita-Recht), Regierungspräsidien Freiburg/Tübingen
-- Vergabeplattform Baden-Württemberg (vergabe.landbw.de): Träger-/Kita-/
-  Jugendhilfe-Ausschreibungen der Region (Gemeinde-Filter Konstanz möglich)
 - Grenzüberschreitend: Thurgau/Kreuzlingen (CH), Vorarlberg/Bregenz (AT) —
   CH-Trägerbewegungen laufen über Quelle `integras`
 - Insolvenz-/Nachfolge-Signale der Region werden bereits von den DE-weiten
   Quellen `insolvenz` und `nexxt_change` erfasst (nicht geografisch begrenzt)
+- NICHT getrackt: Vergabeplattform BW (vergabe.landbw.de) — BW schreibt
+  Jugendhilfe/Kita nicht über Vergabe aus (§78a-g SGB VIII Leistungsver-
+  einbarungen), die Plattform enthält praktisch nur Bau-/IT-Vergaben.
 
 ### Personal und Fachkraftthemen
 - Fachkräftemangel Sozialpädagogik

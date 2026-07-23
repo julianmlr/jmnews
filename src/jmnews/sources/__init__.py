@@ -25,6 +25,7 @@ from jmnews.sources.ilb import ILB
 from jmnews.sources.insolvenz import Insolvenz
 from jmnews.sources.integras import Integras
 from jmnews.sources.jugendhilfeportal import Jugendhilfeportal
+from jmnews.sources.kvjs import KVJS
 from jmnews.sources.lifespan_io import LifespanIo
 from jmnews.sources.mbjs_brandenburg import MBJSBrandenburg
 from jmnews.sources.nbf import NbF
@@ -32,6 +33,7 @@ from jmnews.sources.nexxt_change import NexxtChange
 from jmnews.sources.paritaet_berlin import ParitaetBerlin
 from jmnews.sources.peter_attia import PeterAttia
 from jmnews.sources.rbb24 import Rbb24
+from jmnews.sources.suedkurier import Suedkurier
 from jmnews.sources.tagesspiegel import Tagesspiegel
 from jmnews.sources.taz_berlin import TazBerlin
 from jmnews.sources.vergabe_berlin import VergabeBerlin
@@ -50,6 +52,7 @@ def enabled_sources() -> list[Source]:
         BerlinerZeitung(),
         TazBerlin(),
         Rbb24(),
+        Suedkurier(),  # Bodensee / Kreis Konstanz Regionalnews
         NbF(),
         DSEE(),
         # HTML scrapers
@@ -70,6 +73,7 @@ def enabled_sources() -> list[Source]:
         Insolvenz(),
         NexxtChange(),
         Integras(),
+        KVJS(),  # Landesjugendamt BW / Heimaufsicht (Bodensee-Expansion)
         # Longevity (Tier-3 Background-Themen)
         PeterAttia(),
         LifespanIo(),
@@ -86,6 +90,7 @@ __all__ = [
     "DSEE",
     "IBB",
     "ILB",
+    "KVJS",
     "Insolvenz",
     "Integras",
     "VPK",
@@ -110,6 +115,7 @@ __all__ = [
     "Rbb24",
     "SenBJFAusschreibungen",
     "Source",
+    "Suedkurier",
     "Tagesspiegel",
     "TazBerlin",
     "VergabeBerlin",

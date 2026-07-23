@@ -187,6 +187,20 @@ Branche (eigene Produktentwicklung, läuft parallel zur Kern-Trägerarbeit).
 - Landkreis Oder-Spree (LOS)
 - Jugendamtsentwicklungen Brandenburg
 
+### Bodenseeregion / Konstanz (Expansion Süd)
+- Stadt und Landkreis Konstanz (Singen, Radolfzell, Stockach, Engen)
+- Bodenseekreis (Friedrichshafen, Überlingen, Markdorf, Meersburg)
+- Landkreis Ravensburg / Sigmaringen (angrenzend)
+- KVJS Baden-Württemberg (Landesjugendamt / Heimaufsicht BW): Betriebs-
+  erlaubnis §45 SGB VIII, Aufsicht über stationäre Jugendhilfe
+- KiTaG Baden-Württemberg (Kita-Recht), Regierungspräsidien Freiburg/Tübingen
+- Vergabeplattform Baden-Württemberg (vergabe.landbw.de): Träger-/Kita-/
+  Jugendhilfe-Ausschreibungen der Region (Gemeinde-Filter Konstanz möglich)
+- Grenzüberschreitend: Thurgau/Kreuzlingen (CH), Vorarlberg/Bregenz (AT) —
+  CH-Trägerbewegungen laufen über Quelle `integras`
+- Insolvenz-/Nachfolge-Signale der Region werden bereits von den DE-weiten
+  Quellen `insolvenz` und `nexxt_change` erfasst (nicht geografisch begrenzt)
+
 ### Personal und Fachkraftthemen
 - Fachkräftemangel Sozialpädagogik
 - Erzieher-Ausbildung Berlin/Brandenburg
@@ -299,6 +313,11 @@ Branche (eigene Produktentwicklung, läuft parallel zur Kern-Trägerarbeit).
 - "Jugendamt" + Treptow-Köpenick / Tempelhof-Schöneberg
 - "Kita-Trägerservice" + Tempelhof-Schöneberg / Treptow-Köpenick
 - Geographische Namen Speckgürtel-Süd
+- "Konstanz" / "Bodensee" / "Bodenseekreis" / "Friedrichshafen" /
+  "Überlingen" / "Singen" / "Radolfzell" / "Ravensburg" + Jugendhilfe /
+  Kita / Heim / Träger / Wohngruppe / SGB VIII
+- "KVJS" (Landesjugendamt BW) / "KiTaG Baden-Württemberg" + Betriebserlaubnis /
+  Aufsicht / Träger
 - "Senatsverwaltung Bildung Jugend Familie" / "SenBJF"
 - "Liga der Spitzenverbände" Berlin
 - "Paritätischer Berlin"

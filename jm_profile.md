@@ -165,6 +165,15 @@ Branche (eigene Produktentwicklung, läuft parallel zur Kern-Trägerarbeit).
   (nexxt-change.org NACE 5,63 Sozialwesen und 5,27 Heime mit
   Kita-/Jugendhilfe-Filter) — DE-weit, da kaufkraft-basierter Markt
 - M&A Sozialwirtschaft
+- **Übernahme-Zielmärkte außerhalb der Kernregion**: neben Berlin/Brandenburg
+  gezielt **Hamburg** (+ Metropolregion: Norderstedt, Pinneberg, Ahrensburg,
+  Wedel, Reinbek) und **München** (+ Umland: Landkreis München, Fürsten-
+  feldbruck, Dachau, Freising, Starnberg, Erding). Insolvenzen, Träger-
+  wechsel, Nachfolge- und Verkaufsangebote von Kinder-/Jugendhilfe-/Kita-
+  Trägern dort sind Asset-Deal-Chancen für die Multi-Site-Skalierung und
+  gehören mindestens `relevant`, mit konkretem Verfahren `action`. NUR im
+  Übernahme-/Insolvenz-/Nachfolge-/Marktbewegungs-Kontext werten — allgemeine
+  Lokalnachrichten aus Hamburg/München bleiben außen vor.
 
 ## Themenfilter MITTEL (relevante Hintergrundinformation)
 
@@ -302,6 +311,9 @@ Branche (eigene Produktentwicklung, läuft parallel zur Kern-Trägerarbeit).
 - "Frauenhaus" / "Frauen- und Kinderschutzhaus" / "Gewaltschutz" /
   "Zufluchtswohnung" — im Ausschreibungs-/IBV-/Betreiberauswahl-Kontext
   High-Trigger; reine News (Kampagnen, Gedenktage, Einweihungen) nur `context`
+- "Hamburg" / "München" + Übernahme / Insolvenz / Nachfolge / Trägerwechsel /
+  Verkauf / Kinderheim / Jugendhilfe / Kita — Übernahme-Zielmärkte, NUR im
+  M&A-/Marktbewegungs-Kontext (nicht allgemeine Lokalnachrichten)
 - "KitaFöG" / "VOKitaFöG" (Berliner Kita-Gesetz)
 - "ISBJ" / "Kita-Voucher" / "Kita-Gutschein" Berlin
 - "Kitaaufsicht" Berlin / "SenBJF" + Kita

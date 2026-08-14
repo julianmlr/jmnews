@@ -228,7 +228,8 @@ Branche (eigene Produktentwicklung, läuft parallel zur Kern-Trägerarbeit).
 - Grundstücke für gemeinnützige Träger
 
 ### Kinderschutz und Pädagogik
-- Heimaufsicht Berlin (SenBJF Einrichtungsaufsicht)
+- Heimaufsicht Berlin (SenBJF Einrichtungsaufsicht) — Quelle `berlin_aufsicht`
+  (Fachinfo-Seiten Einrichtungsaufsicht §45 SGB VIII **und** Kitaaufsicht)
 - Kinderschutz-Fälle in Berliner/Brandenburger Heimen
 - Ombudsstellen Jugendhilfe
 - Beteiligungs- und Beschwerdestrukturen
@@ -311,6 +312,17 @@ Branche (eigene Produktentwicklung, läuft parallel zur Kern-Trägerarbeit).
 - "Frauenhaus" / "Frauen- und Kinderschutzhaus" / "Gewaltschutz" /
   "Zufluchtswohnung" — im Ausschreibungs-/IBV-/Betreiberauswahl-Kontext
   High-Trigger; reine News (Kampagnen, Gedenktage, Einweihungen) nur `context`
+- Quelle `berlin_aufsicht` — SenBJF Heim-/Kitaaufsicht. Die Quelle meldet ein
+  Dokument, wenn es NEU ist oder sein redaktioneller "Stand" sich geändert hat
+  (also inhaltlich neu gefasst wurde). Bewertung nach Inhalt:
+  `action` bei geänderten Vorgaben mit direkter Betriebswirkung — Bau- und
+  Ausstattungsstandards, Fachkraft-/Quereinstiegsregelungen, Melde-/Anzeige-
+  pflichten (besondere Vorkommnisse), Antrags-/Betriebserlaubnisverfahren §45;
+  `relevant` bei Handreichungen, Rundschreiben, Schutzkonzept-/Beteiligungs-
+  vorgaben; `context` bei reinen Formularen und Anleitungen ohne Regeländerung
+  (Meldebogen, Registrierungsschein, ISBJ-Anleitung).
+  Hinweis: Der ERSTE Lauf meldet den gesamten Bestand (~25 Dokumente) einmalig —
+  das ist Bestandsaufnahme, kein Alarm; danach nur noch echte Änderungen.
 - "Hamburg" / "München" + Übernahme / Insolvenz / Nachfolge / Trägerwechsel /
   Verkauf / Kinderheim / Jugendhilfe / Kita — Übernahme-Zielmärkte, NUR im
   M&A-/Marktbewegungs-Kontext (nicht allgemeine Lokalnachrichten)

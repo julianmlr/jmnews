@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from jmnews.sources.base import Source
 from jmnews.sources.baulinks import Baulinks
+from jmnews.sources.berlin_aufsicht import BerlinAufsicht
 from jmnews.sources.berlin_gewaltschutz import BerlinGewaltschutz
 from jmnews.sources.berlin_jugendaemter import (
     SenBJFAusschreibungen,
@@ -68,6 +69,7 @@ def enabled_sources() -> list[Source]:
         VergabeBerlin(),
         VergabeBrandenburg(),
         SenBJFAusschreibungen(),
+        BerlinAufsicht(),  # Heim-/Kitaaufsicht §45 SGB VIII
         *jugendamt_sources(),
         BrandenburgVorschriften(),
         Insolvenz(),
@@ -95,6 +97,7 @@ __all__ = [
     "Integras",
     "VPK",
     "Baulinks",
+    "BerlinAufsicht",
     "BerlinGewaltschutz",
     "BerlinPresseportal",
     "BerlinTraegeraufrufe",

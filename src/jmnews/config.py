@@ -38,7 +38,12 @@ class Settings(BaseSettings):
     log_dir: Path = Field(default=Path("data/logs"), alias="JMNEWS_LOG_DIR")
 
     # Behaviour
-    lookback_hours: int = Field(default=24, alias="JMNEWS_LOOKBACK_HOURS")
+    # 72h (not 24h): the window is floored to midnight for date-only sources
+    # (see pipeline.collection_window_start), and the extra days give slack if
+    # a scheduled run is missed — a Trägeraufruf must not be lost because the
+    # container was down for a night. Re-collection is free: storage dedups by
+    # id and delivered items are never re-sent.
+    lookback_hours: int = Field(default=72, alias="JMNEWS_LOOKBACK_HOURS")
     filter_batch_size: int = Field(default=15, alias="JMNEWS_FILTER_BATCH_SIZE")
     purge_days: int = Field(default=30, alias="JMNEWS_PURGE_DAYS")
     timezone: str = Field(default="Europe/Berlin", alias="JMNEWS_TIMEZONE")

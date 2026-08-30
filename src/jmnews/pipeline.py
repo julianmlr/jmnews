@@ -50,6 +50,31 @@ def setup_logging(settings: Settings) -> None:
     )
 
 
+def collection_window_start(
+    lookback_hours: int, *, now: datetime | None = None
+) -> datetime:
+    """Start of the collection window, floored to midnight UTC.
+
+    Many sources publish date-only timestamps (nexxt-change, Insolvenzportal,
+    die Vergabeplattformen, Südkurier), which parse to 00:00 of that day. A
+    plain rolling `now - lookback_hours` cut then silently drops a whole day
+    of items: the 06:45 run compares them against *yesterday 06:45*, so an ad
+    that went online yesterday at 10:00 carries published_at = yesterday 00:00
+    and is already outside the window — it was not yet online during the
+    previous run and can never be collected afterwards. With a 24h lookback and
+    a 06:45 schedule that blind spot swallowed ~72% of each day's postings.
+
+    Flooring to midnight makes the window cover whole calendar days, which is
+    the granularity the data actually has. Re-collecting an item that is
+    already known is harmless: storage dedups by id (INSERT OR IGNORE), only
+    unclassified items are filtered, and delivered items are never re-sent.
+    """
+    now = now or datetime.now(UTC)
+    return (now - timedelta(hours=lookback_hours)).replace(
+        hour=0, minute=0, second=0, microsecond=0
+    )
+
+
 def run_once(settings: Settings) -> RunSummary:
     """Run the full collect → filter → briefing → deliver pipeline once."""
     storage = Storage(settings.db_path)
@@ -58,7 +83,7 @@ def run_once(settings: Settings) -> RunSummary:
 
     try:
         storage.backup()
-        since = datetime.now(UTC) - timedelta(hours=settings.lookback_hours)
+        since = collection_window_start(settings.lookback_hours)
 
         new_items = _collect(storage, since)
         filtered = _filter(storage, settings, since)

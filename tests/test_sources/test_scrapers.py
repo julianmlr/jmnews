@@ -13,19 +13,18 @@ from unittest.mock import patch
 import pytest
 
 from jmnews.sources import enabled_sources
-from jmnews.sources.brandenburg_vorschriften import BrandenburgVorschriften
-from jmnews.sources.bsfz import BSFZ
 from jmnews.sources.daks import DaKS
 from jmnews.sources.diakonie_bb import DiakonieBB
 from jmnews.sources.ibb import IBB
-from jmnews.sources.ilb import ILB
 from jmnews.sources.mbjs_brandenburg import MBJSBrandenburg
 from jmnews.sources.paritaet_berlin import ParitaetBerlin
 from jmnews.sources.vpk import VPK
 
+# ILB und brandenburg_vorschriften stehen bewusst nicht mehr hier: beide
+# Sites liefern keine scrapebare Liste mehr und haben eigene Quellenklassen
+# (Nuxt-Payload bzw. Formularsuche) mit eigenen Tests.
 SCRAPER_CLASSES = [
-    IBB, ILB, BSFZ, DaKS, BrandenburgVorschriften, ParitaetBerlin, DiakonieBB,
-    MBJSBrandenburg, VPK,
+    IBB, DaKS, ParitaetBerlin, DiakonieBB, MBJSBrandenburg, VPK,
 ]
 
 
@@ -100,7 +99,6 @@ def test_enabled_sources_includes_all_configured() -> None:
         # scrapers
         "ibb",
         "ilb",
-        "bsfz",
         "daks",
         "paritaet_berlin",
         "diakonie_bb",

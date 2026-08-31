@@ -14,7 +14,6 @@ from jmnews.sources.berlin_presseportal import BerlinPresseportal
 from jmnews.sources.berlin_traegeraufrufe import BerlinTraegeraufrufe
 from jmnews.sources.berliner_zeitung import BerlinerZeitung
 from jmnews.sources.brandenburg_vorschriften import BrandenburgVorschriften
-from jmnews.sources.bsfz import BSFZ
 from jmnews.sources.creditreform import Creditreform
 from jmnews.sources.daks import DaKS
 from jmnews.sources.diakonie_bb import DiakonieBB
@@ -59,7 +58,6 @@ def enabled_sources() -> list[Source]:
         # HTML scrapers
         IBB(),
         ILB(),
-        BSFZ(),
         DaKS(),
         ParitaetBerlin(),
         DiakonieBB(),
@@ -88,7 +86,6 @@ def enabled_sources() -> list[Source]:
 
 
 __all__ = [
-    "BSFZ",
     "DSEE",
     "IBB",
     "ILB",

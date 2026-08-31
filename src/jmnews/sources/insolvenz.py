@@ -87,6 +87,42 @@ _EXCLUDE_TOKENS = re.compile(
 )
 
 
+def _form_defaults(form: Any) -> dict[str, str]:
+    """Every named field of `form` with the value an untouched browser would send.
+
+    Selects fall back to their first option (the portal's "no selection" entry,
+    currently `NO_CODE`), unchecked boxes submit empty, everything else carries
+    its rendered `value` — which is what supplies the JSF form marker and the
+    `jakarta.faces.ViewState` token.
+    """
+    payload: dict[str, str] = {}
+    for el in form.find_all(["input", "select", "textarea"]):
+        name = el.get("name")
+        if not name:
+            continue
+        if el.name == "select":
+            option = el.find("option")
+            payload[name] = (option.get("value") or "") if option else ""
+        elif el.get("type") in ("checkbox", "radio"):
+            payload[name] = el.get("value", "") if el.has_attr("checked") else ""
+        else:
+            payload[name] = el.get("value") or ""
+    return payload
+
+
+def _field_name(payload: dict[str, str], suffix: str) -> str:
+    """Resolve the full field name ending in `suffix`, else raise.
+
+    Raising here is deliberate: `fetch` turns it into one warning naming the
+    missing field, which is the signal that the portal renamed something —
+    far easier to act on than the bare 500 a stale payload produces.
+    """
+    matches = [name for name in payload if name.endswith(suffix)]
+    if len(matches) != 1:
+        raise ValueError(f"expected exactly one field ending in {suffix!r}, got {matches}")
+    return matches[0]
+
+
 class Insolvenz(Source):
     """Polls the federal insolvency portal for Kita/Jugendhilfe Träger."""
 
@@ -136,37 +172,26 @@ class Insolvenz(Source):
         r = client.get(SEARCH_URL)
         r.raise_for_status()
         soup = BeautifulSoup(r.text, "html.parser")
-        forms = soup.find_all("form")
-        if len(forms) < 3:
-            raise ValueError("Search form not present")
-        form = forms[2]
-        action = form.get("action") or "/ap/suche.jsf"
-        vs_input = soup.find("input", {"name": "jakarta.faces.ViewState"})
-        if vs_input is None or not vs_input.get("value"):
-            raise ValueError("ViewState missing")
+        form = soup.find("form", id="frm_suche")
+        if form is None:
+            raise ValueError("Search form frm_suche not present")
 
-        payload = {
-            "frm_suche": "frm_suche",
-            "frm_suche:lsom_bundesland:lsom": "",
-            "frm_suche:lsom_gericht:lsom": "",
-            "frm_suche:ldi_datumVon:datumHtml5": since_date.strftime("%Y-%m-%d"),
-            "frm_suche:ldi_datumBis:datumHtml5": until.strftime("%Y-%m-%d"),
-            "frm_suche:lsom_wildcard:lsom": "0",  # 0 = "*"
-            "frm_suche:litx_firmaNachName:text": firma,
-            "frm_suche:litx_vorname:text": "",
-            "frm_suche:litx_sitzWohnsitz:text": "",
-            "frm_suche:iaz_aktenzeichen:sbc_ohneAbteilung": "",
-            "frm_suche:iaz_aktenzeichen:itx_abteilung": "",
-            "frm_suche:iaz_aktenzeichen:som_registerzeichen": "",
-            "frm_suche:iaz_aktenzeichen:itx_lfdNr": "",
-            "frm_suche:iaz_aktenzeichen:itx_jahr": "",
-            "frm_suche:lsom_gegenstand:lsom": "",
-            "frm_suche:ireg_registereintrag:som_registergericht": "",
-            "frm_suche:ireg_registereintrag:som_registerart": "",
-            "frm_suche:ireg_registereintrag:itx_registernummer": "",
-            "frm_suche:cbt_suchen": "Suchen",
-            "jakarta.faces.ViewState": vs_input["value"],
-        }
+        # The portal renames its JSF field ids on redeploys (the naming-container
+        # prefixes changed once already: `lsom_bundesland:lsom` became
+        # `lsom_bundesland:codelist:scl_bundesland:mysom`). Posting a stale name
+        # makes Mojarra answer 500 with no usable message, so we seed the payload
+        # from the form that was actually served and only override the few fields
+        # we care about, matched by their stable id suffix.
+        payload = _form_defaults(form)
+        for suffix, value in (
+            ("ldi_datumVon:datumHtml5", since_date.strftime("%Y-%m-%d")),
+            ("ldi_datumBis:datumHtml5", until.strftime("%Y-%m-%d")),
+            ("lsom_wildcard:lsom", "0"),  # 0 = "*"
+            ("litx_firmaNachName:text", firma),
+        ):
+            payload[_field_name(payload, suffix)] = value
+
+        action = str(form.get("action") or "/ap/suche.jsf")
         post_url = action if action.startswith("http") else f"{BASE}{action}"
         r2 = client.post(post_url, data=payload)
         r2.raise_for_status()
@@ -178,7 +203,7 @@ class Insolvenz(Source):
         for tr in table.select("tbody > tr"):
             row = {}
             for span in tr.find_all("span", id=True):
-                key = span["id"].rsplit(":", 1)[-1]  # otx_datum, otx_azAkt, ...
+                key = str(span["id"]).rsplit(":", 1)[-1]  # otx_datum, otx_azAkt, ...
                 row[key] = span.get_text(" ", strip=True)
             if row:
                 rows.append(row)

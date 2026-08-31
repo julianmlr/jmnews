@@ -30,10 +30,14 @@ Anfrage), Tagesspiegel Berlin (Google-News-Sitemap, `/berlin/`-Filter),
 Berliner Zeitung, taz Berlin, rbb24, NbF Brandenburg (Frauenhäuser),
 DSEE (Deutsche Stiftung für Engagement und Ehrenamt).
 
-**HTML-Scraping** — IBB, ILB Brandenburg, BSFZ Bescheinigungsstelle
-Forschungszulage, DaKS Berlin (Kinderladen-Blog), Paritätischer Berlin
-(Wohlfahrtsverband, Aktuelles), Diakonie BB (Wohlfahrtsverband, Meldungen),
-Brandenburg Vorschriften (bravors).
+**HTML-Scraping** — IBB, DaKS Berlin (Kinderladen-Blog), Paritätischer
+Berlin (Wohlfahrtsverband, Aktuelles), Diakonie BB (Wohlfahrtsverband,
+Meldungen).
+
+**Formular-/Payload-Quellen** — ILB Brandenburg (Programm-Meldungen aus dem
+Nuxt-Payload, da die Seite clientseitig rendert), Brandenburg Vorschriften
+(bravors, erweiterte Suche nach Ausfertigungsdatum), Insolvenzportal
+(JSF-Suchmaske), nexxt-change (Nachfolgebörse).
 
 ## Voraussetzungen
 

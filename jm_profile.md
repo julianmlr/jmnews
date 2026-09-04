@@ -121,6 +121,14 @@ Branche (eigene Produktentwicklung, läuft parallel zur Kern-Trägerarbeit).
   Nachbarschaftshilfe, Aufnahme- und Unterbringungsleistungen, Eingliederungshilfe,
   Kinderbetreuung, Familienhilfe, Schulsozialarbeit, MabE/Maßnahmen aus dem
   Programm Bürgerarbeit/Integration.
+  Die Quelle pollt BEIDE CPV-Kategorien; der Snippet trägt das Label
+  "CPV 85 Sozialwesen" bzw. "CPV 80 Bildung". Für **CPV 80** gilt zusätzlich:
+  `action`/`relevant` nur bei Jugendhilfe-, Präventions-, Grundbildungs- oder
+  Integrationsbezug (z.B. Landkreis-Bildungsamt-Projekte, Maßnahmen für
+  benachteiligte Jugendliche, MBJS-Rahmenvereinbarungen mit Trägerbeteiligung);
+  reine Schul-/Nachhilfe-/Fortbildungsvergaben ohne Trägerbezug sind `context`.
+  "Beabsichtigte Ausschreibung" ist besonders wertvoll — das ist der Zeitpunkt
+  VOR dem eigentlichen Verfahren.
 - **Vergabeplattform Berlin (berlin.de/vergabeplattform)** — Quelle `vergabe_berlin`:
   öffentliche Bekanntmachungen des Landes, vorgefiltert auf Sozial-/Jugend-/
   Kita-/Pflege-/Frauenhaus-Leistungen. Analog zur Brandenburg-Regel: jede

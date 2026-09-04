@@ -1,4 +1,4 @@
-"""Tests for the Berlin Vergabeplattform scraper and Gewaltschutz topic feed."""
+"""Tests for the Berlin Vergabeplattform feed and the Gewaltschutz topic feed."""
 
 from __future__ import annotations
 
@@ -12,7 +12,7 @@ from jmnews.sources.berlin_gewaltschutz import (
     BerlinGewaltschutz,
     build_search_feed_url,
 )
-from jmnews.sources.vergabe_berlin import VergabeBerlin
+from jmnews.sources.vergabe_berlin import FEED_URL, VergabeBerlin
 
 OLD = datetime(2020, 1, 1, tzinfo=UTC)
 
@@ -20,89 +20,60 @@ OLD = datetime(2020, 1, 1, tzinfo=UTC)
 # --- vergabe_berlin ---------------------------------------------------------
 
 
-def _single_page(raw: str) -> VergabeBerlin:
+def _fetch(raw: str, since: datetime = OLD) -> list:
+    with patch("jmnews.sources.base.http_get", return_value=raw):
+        return VergabeBerlin().fetch(since)
+
+
+def test_uses_single_feed_request_not_pagination() -> None:
+    """One request instead of six paginated pages — that is the 429 fix."""
     src = VergabeBerlin()
-    src.max_pages = 1
-    src.request_delay = 0  # no sleeping in tests
-    return src
+    assert src.feed_urls() == [FEED_URL]
+    assert FEED_URL.endswith("feed.rss")
 
 
-def test_keeps_social_tenders_filters_construction(fixtures_dir: Path) -> None:
-    raw = (fixtures_dir / "vergabe_berlin.html").read_text(encoding="utf-8")
-    src = _single_page(raw)
-
-    with patch("jmnews.sources.vergabe_berlin.http_get", return_value=raw):
-        items = src.fetch(OLD)
+def test_keeps_social_drops_construction(fixtures_dir: Path) -> None:
+    raw = (fixtures_dir / "vergabe_berlin.rss").read_text(encoding="utf-8")
+    items = _fetch(raw)
 
     titles = [i.title for i in items]
-    # Frauenhaus + Hilfen zur Erziehung survive, the construction tender is dropped.
-    assert any("Frauen- und Kinderschutzhaus" in t for t in titles)
-    assert any("Hilfen zur Erziehung" in t for t in titles)
-    assert not any("Haufwerksbeprobungen" in t for t in titles)
+    assert any("Flüchtlingsunterkünfte" in t for t in titles)
+    assert any("Trägeraufruf Kita-Neubau" in t for t in titles)
+    assert not any("Brunnenbau" in t for t in titles)
+    assert not any("Dachdecker" in t for t in titles)
     assert all(i.source == "vergabe_berlin" for i in items)
 
 
-def test_extracts_url_date_and_snippet(fixtures_dir: Path) -> None:
-    raw = (fixtures_dir / "vergabe_berlin.html").read_text(encoding="utf-8")
-    src = _single_page(raw)
-
-    with patch("jmnews.sources.vergabe_berlin.http_get", return_value=raw):
-        items = src.fetch(OLD)
-
-    fh = next(i for i in items if "Frauen- und Kinderschutzhaus" in i.title)
-    assert fh.url == (
+def test_keeps_rib_detail_url_so_ids_stay_stable(fixtures_dir: Path) -> None:
+    """The RIB URL is unchanged from the old HTML scraper, so already
+    delivered tenders keep their id and are not re-alerted."""
+    raw = (fixtures_dir / "vergabe_berlin.rss").read_text(encoding="utf-8")
+    item = next(i for i in _fetch(raw) if "Flüchtlingsunterkünfte" in i.title)
+    assert item.url == (
         "https://meinauftrag.rib.de/public/DetailsByPlatformIdAndTenderId/"
-        "platformId/2/tenderId/209001"
+        "platformId/2/tenderId/301001"
     )
-    assert fh.published_at.date().isoformat() == "2026-07-20"
-    assert "Interessenbekundungsverfahren" in fh.snippet
-    assert "Frist: 15.09.2026" in fh.snippet
+
+
+def test_snippet_carries_verfahrensart(fixtures_dir: Path) -> None:
+    raw = (fixtures_dir / "vergabe_berlin.rss").read_text(encoding="utf-8")
+    items = _fetch(raw)
+    kita = next(i for i in items if "Kita-Neubau" in i.title)
+    # Below-threshold procedures (UVgO) are in the feed — TED never shows them.
+    assert "UVgO" in kita.snippet
+    assert "Ausführungsort" in kita.snippet
 
 
 def test_filters_by_since(fixtures_dir: Path) -> None:
-    raw = (fixtures_dir / "vergabe_berlin.html").read_text(encoding="utf-8")
-    src = _single_page(raw)
-    since = datetime(2026, 7, 10, tzinfo=UTC)
-
-    with patch("jmnews.sources.vergabe_berlin.http_get", return_value=raw):
-        items = src.fetch(since)
-
-    # The "Hilfen zur Erziehung" tender (05.07.) is out of window; Frauenhaus stays.
-    titles = [i.title for i in items]
-    assert any("Frauen- und Kinderschutzhaus" in t for t in titles)
-    assert not any("Hilfen zur Erziehung" in t for t in titles)
+    raw = (fixtures_dir / "vergabe_berlin.rss").read_text(encoding="utf-8")
+    # pubDate carries +0200, so "02 Sep 00:00" is 01 Sep 22:00 UTC.
+    items = _fetch(raw, since=datetime(2026, 9, 1, tzinfo=UTC))
+    assert [i.title for i in items] == ["Betriebsleistungen für Flüchtlingsunterkünfte"]
 
 
 def test_returns_empty_on_http_failure() -> None:
-    src = VergabeBerlin()
-    src.request_delay = 0
-    with patch("jmnews.sources.vergabe_berlin.http_get", side_effect=RuntimeError("503")):
-        assert src.fetch(OLD) == []
-
-
-def test_stops_paginating_on_empty_page() -> None:
-    src = VergabeBerlin()
-    src.request_delay = 0
-    empty = "<html><body><main></main></body></html>"
-    with patch("jmnews.sources.vergabe_berlin.http_get", return_value=empty) as mock_get:
-        items = src.fetch(OLD)
-    assert items == []
-    # First page empty => no further pagination requests.
-    assert mock_get.call_count == 1
-
-
-def test_dedupes_repeated_cards_across_pages(fixtures_dir: Path) -> None:
-    raw = (fixtures_dir / "vergabe_berlin.html").read_text(encoding="utf-8")
-    src = VergabeBerlin()
-    src.max_pages = 3
-    src.request_delay = 0
-    # Every page returns the same HTML: dedup by id, then stop when a page is
-    # all-duplicates (page 2).
-    with patch("jmnews.sources.vergabe_berlin.http_get", return_value=raw) as mock_get:
-        items = src.fetch(OLD)
-    ids = [i.id for i in items]
-    assert len(ids) == len(set(ids))
-    assert mock_get.call_count == 2
+    with patch("jmnews.sources.base.http_get", side_effect=RuntimeError("503")):
+        assert VergabeBerlin().fetch(OLD) == []
 
 
 # --- berlin_gewaltschutz ----------------------------------------------------

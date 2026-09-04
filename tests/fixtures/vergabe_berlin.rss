@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>Bekanntmachungen - Vergabeplattform Berlin</title>
+    <link>https://www.berlin.de/vergabeplattform/veroeffentlichungen/bekanntmachungen/</link>
+    <description>Aktuelle Bekanntmachungen</description>
+    <item>
+      <title>Betriebsleistungen für Flüchtlingsunterkünfte</title>
+      <link>https://meinauftrag.rib.de/public/DetailsByPlatformIdAndTenderId/platformId/2/tenderId/301001</link>
+      <pubDate>Wed, 02 Sep 2026 00:00:00 +0200</pubDate>
+      <description>Verfahrensart: Offenes Verfahren (VgV)&lt;br /&gt;Ausführungsort: 10589, Berlin</description>
+    </item>
+    <item>
+      <title>Trägeraufruf Kita-Neubau Lichtenrade</title>
+      <link>https://meinauftrag.rib.de/public/DetailsByPlatformIdAndTenderId/platformId/2/tenderId/301002</link>
+      <pubDate>Tue, 01 Sep 2026 00:00:00 +0200</pubDate>
+      <description>Verfahrensart: Öffentliche Ausschreibung (UVgO)&lt;br /&gt;Ausführungsort: 12309, Berlin</description>
+    </item>
+    <item>
+      <title>Brunnenbauarbeiten Orchideenwiese</title>
+      <link>https://meinauftrag.rib.de/public/DetailsByPlatformIdAndTenderId/platformId/2/tenderId/301003</link>
+      <pubDate>Mon, 31 Aug 2026 00:00:00 +0200</pubDate>
+      <description>Verfahrensart: Öffentliche Ausschreibung (VOB/A)&lt;br /&gt;Ausführungsort: 13581, Berlin</description>
+    </item>
+    <item>
+      <title>Dachdecker- und Klempnerarbeiten Haus 7</title>
+      <link>https://meinauftrag.rib.de/public/DetailsByPlatformIdAndTenderId/platformId/2/tenderId/301004</link>
+      <pubDate>Sun, 30 Aug 2026 00:00:00 +0200</pubDate>
+      <description>Verfahrensart: Öffentliche Ausschreibung (VOB/A)&lt;br /&gt;Ausführungsort: 13353, Berlin</description>
+    </item>
+  </channel>
+</rss>

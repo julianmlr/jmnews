@@ -38,6 +38,8 @@ from jmnews.sources.tagesspiegel import Tagesspiegel
 from jmnews.sources.taz_berlin import TazBerlin
 from jmnews.sources.vergabe_berlin import VergabeBerlin
 from jmnews.sources.vergabe_brandenburg import VergabeBrandenburg
+from jmnews.sources.vergabe_software_laender import VergabeSoftwareLaender
+from jmnews.sources.vergabe_software_ted import VergabeSoftwareTED
 from jmnews.sources.vpk import VPK
 
 
@@ -66,6 +68,9 @@ def enabled_sources() -> list[Source]:
         VPK(),
         VergabeBerlin(),
         VergabeBrandenburg(),
+        # Säule 3: öffentliche Software-Ausschreibungen
+        VergabeSoftwareTED(),        # ganz DE, oberhalb EU-Schwelle
+        VergabeSoftwareLaender(),    # BB/NRW/RLP, unterhalb EU-Schwelle
         SenBJFAusschreibungen(),
         BerlinAufsicht(),  # Heim-/Kitaaufsicht §45 SGB VIII
         *jugendamt_sources(),
@@ -120,6 +125,8 @@ __all__ = [
     "TazBerlin",
     "VergabeBerlin",
     "VergabeBrandenburg",
+    "VergabeSoftwareLaender",
+    "VergabeSoftwareTED",
     "enabled_sources",
     "jugendamt_sources",
 ]

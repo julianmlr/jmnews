@@ -320,6 +320,24 @@ Branche (eigene Produktentwicklung, läuft parallel zur Kern-Trägerarbeit).
 - "Frauenhaus" / "Frauen- und Kinderschutzhaus" / "Gewaltschutz" /
   "Zufluchtswohnung" — im Ausschreibungs-/IBV-/Betreiberauswahl-Kontext
   High-Trigger; reine News (Kampagnen, Gedenktage, Einweihungen) nur `context`
+- Quellen `vergabe_software_ted` / `vergabe_software_laender` — öffentliche
+  Software-/IT-Ausschreibungen für **Säule 3** (SaaS/Software), NICHT für die
+  Trägerarbeit. Beide sind bereits vorgefiltert auf Verfahren OHNE vorgeschal-
+  teten Teilnahmewettbewerb, d.h. ohne Referenz-Vorrunde (TED: `open`;
+  Landesportale: kein "TNW"). Bewertung:
+  `action` bei Vorhaben, die zu JMs Profil passen — Liquiditäts-/Finanz-/
+  Controlling-Software, Bau-/Vergabe-Software, Fach- und Antragsverfahren im
+  Sozial-/Jugendbereich, Portale und Digitalisierungsvorhaben mittlerer Größe;
+  `relevant` bei sonstiger Individual-Softwareentwicklung mit erreichbarem
+  Volumen; `context` bei reinen Lizenz-, Hardware-, Server-/Storage- und
+  Wartungsbeschaffungen (Microsoft-, Citrix-, VMware-Lizenzen o.ä.) sowie bei
+  Konzern-Rahmenverträgen im Millionenbereich — dafür ist SBW zu klein.
+  Diese Items gehören NICHT ins DRINGEND-Segment der Trägerarbeit, sondern in
+  einen eigenen Block "Software-Ausschreibungen"; sie dürfen Trägeraufrufe
+  niemals verdrängen.
+  Hinweis für die Einordnung: "kein Teilnahmewettbewerb" heißt nur, dass keine
+  Referenz-VORRUNDE existiert — Eignungs-/Referenzanforderungen können trotzdem
+  in den Vergabeunterlagen stehen.
 - Quelle `berlin_aufsicht` — SenBJF Heim-/Kitaaufsicht. Die Quelle meldet ein
   Dokument, wenn es NEU ist oder sein redaktioneller "Stand" sich geändert hat
   (also inhaltlich neu gefasst wurde). Bewertung nach Inhalt:

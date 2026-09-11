@@ -51,7 +51,7 @@ cd /root
 git clone https://github.com/julianmlr/jmnews.git
 cd jmnews
 cp .env.example .env
-nano .env          # ANTHROPIC_API_KEY, TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID
+nano .env          # ANTHROPIC_API_KEY, TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID, JMNEWS_API_TOKEN
 
 # Data-Ordner mit der UID des Container-Users (1000) anlegen,
 # sonst crashed der Container beim ersten Start mit

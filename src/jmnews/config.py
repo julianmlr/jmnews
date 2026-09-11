@@ -57,6 +57,12 @@ class Settings(BaseSettings):
     chat_history_limit: int = Field(default=20, alias="JMNEWS_CHAT_HISTORY")
     chat_max_tokens: int = Field(default=4096, alias="JMNEWS_CHAT_MAX_TOKENS")
 
+    # HTTP API (read-only JSON; see jmnews.api). Disabled unless a token is set.
+    api_enabled: bool = Field(default=True, alias="JMNEWS_API_ENABLED")
+    api_host: str = Field(default="0.0.0.0", alias="JMNEWS_API_HOST")
+    api_port: int = Field(default=8080, alias="JMNEWS_API_PORT")
+    api_token: str = Field(default="", alias="JMNEWS_API_TOKEN")
+
     log_level: str = Field(default="INFO", alias="JMNEWS_LOG_LEVEL")
 
 

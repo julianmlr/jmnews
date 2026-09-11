@@ -239,6 +239,61 @@ class Storage:
             ).fetchone()
         return _row_to_briefing(row) if row else None
 
+    def latest_briefing(self) -> Briefing | None:
+        with self._conn() as conn:
+            row = conn.execute(
+                "SELECT * FROM briefings ORDER BY id DESC LIMIT 1"
+            ).fetchone()
+        return _row_to_briefing(row) if row else None
+
+    def list_briefings(self, limit: int = 7) -> list[Briefing]:
+        """Newest first. Briefing ids are ISO dates, so ordering by id is chronological."""
+        with self._conn() as conn:
+            rows = conn.execute(
+                "SELECT * FROM briefings ORDER BY id DESC LIMIT ?", (limit,)
+            ).fetchall()
+        return [_row_to_briefing(r) for r in rows]
+
+    def get_items_in_briefing(self, briefing_id: str) -> list[NewsItem]:
+        """Items that were delivered as part of the given briefing."""
+        with self._conn() as conn:
+            rows = conn.execute(
+                """
+                SELECT * FROM items
+                WHERE delivered_in_briefing_id = ?
+                ORDER BY score DESC, published_at DESC
+                """,
+                (briefing_id,),
+            ).fetchall()
+        return [_row_to_item(r) for r in rows]
+
+    def list_items(
+        self,
+        since_days: int = 1,
+        categories: list[str] | None = None,
+        source: str | None = None,
+        limit: int = 100,
+    ) -> list[NewsItem]:
+        """Items published in the last `since_days`, optionally by category/source."""
+        since = datetime.now(UTC) - timedelta(days=since_days)
+        where = ["published_at >= ?"]
+        params: list[Any] = [_iso(since)]
+        if categories:
+            where.append("category IN (" + ",".join("?" * len(categories)) + ")")
+            params += categories
+        if source:
+            where.append("source = ?")
+            params.append(source)
+        sql = (
+            "SELECT * FROM items WHERE "
+            + " AND ".join(where)
+            + " ORDER BY score DESC, published_at DESC LIMIT ?"
+        )
+        params.append(limit)
+        with self._conn() as conn:
+            rows = conn.execute(sql, params).fetchall()
+        return [_row_to_item(r) for r in rows]
+
     # ---------- runs ----------
 
     def start_run(self, kind: str) -> str:

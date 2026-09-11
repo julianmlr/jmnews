@@ -9,6 +9,10 @@ services:
     user: "1000:1000"
     env_file:
       - .env
+    # Read-only JSON API (jmnews.api). Only active when JMNEWS_API_TOKEN is
+    # set in .env. Exposed for the daily Claude cloud routine.
+    ports:
+      - "${JMNEWS_API_PORT:-8080}:${JMNEWS_API_PORT:-8080}"
     volumes:
       - ./data:/app/data
       - ./jm_profile.md:/app/jm_profile.md:ro

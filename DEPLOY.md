@@ -70,6 +70,50 @@ Pfad in `.github/workflows/deploy.yml` anpassen.
 am `.env.example` etwas ändert (neue Variable nötig), trägst du das
 manuell in `/root/jmnews/.env` nach.
 
+## HTTP-API über Caddy freigeben (einmalig)
+
+Die Hetzner-Cloud-Firewall lässt nur 22/80/443 durch. Die jmnews-API
+(Container-Port 8080) wird deshalb nicht direkt veröffentlicht, sondern
+über den bereits laufenden Caddy-Proxy des Liqui-Merge-Setups als Pfad
+auf `www.liquimerge.de` ausgeliefert. Zwei Teile:
+
+1. **jmnews ins Caddy-Netzwerk hängen** — server-only Override, gitignored:
+
+   ```bash
+   cat > /root/jmnews/docker-compose.override.yml <<'EOF'
+   services:
+     jmnews:
+       networks: [default, web]
+   networks:
+     web:
+       external: true
+   EOF
+   cd /root/jmnews && docker compose up -d --force-recreate
+   docker exec caddy wget -qO- http://jmnews:8080/health   # muss {"status": "ok", …} liefern
+   ```
+
+2. **Route in der Caddyfile** (`/opt/liqui-merge/devops/caddy/Caddyfile`),
+   im Block `www.liquimerge.de`:
+
+   ```caddyfile
+   www.liquimerge.de {
+       # jmnews read-only API (token-protected), see /root/jmnews
+       handle_path /jmnews-api/* {
+           reverse_proxy jmnews:8080
+       }
+       handle {
+           reverse_proxy liqui-merge-web-1:80
+       }
+   }
+   ```
+
+   Danach `docker exec caddy caddy validate --config /etc/caddy/Caddyfile`
+   und `docker exec caddy caddy reload --config /etc/caddy/Caddyfile`.
+   Test: `curl -s https://www.liquimerge.de/jmnews-api/health`.
+
+   Wenn die Caddyfile im Liqui-Merge-Repo versioniert ist, die Änderung
+   dort committen, sonst überschreibt der nächste Liqui-Merge-Deploy sie.
+
 ## Updates triggern
 
 ```bash

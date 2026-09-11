@@ -10,9 +10,10 @@ services:
     env_file:
       - .env
     # Read-only JSON API (jmnews.api). Only active when JMNEWS_API_TOKEN is
-    # set in .env. Exposed for the daily Claude cloud routine.
+    # set in .env. Bound to localhost only; the public HTTPS route is served
+    # by the Caddy reverse proxy on the same host (see DEPLOY.md, "HTTP-API").
     ports:
-      - "${JMNEWS_API_PORT:-8080}:${JMNEWS_API_PORT:-8080}"
+      - "127.0.0.1:${JMNEWS_API_PORT:-8080}:${JMNEWS_API_PORT:-8080}"
     volumes:
       - ./data:/app/data
       - ./jm_profile.md:/app/jm_profile.md:ro

@@ -20,3 +20,6 @@ data/logs/
 
 # uv-Artefakt lokaler Dev-Umgebungen; Deploy baut via pip (Dockerfile)
 uv.lock
+
+# Server-only compose override (joins the Caddy `web` network), see DEPLOY.md
+docker-compose.override.yml

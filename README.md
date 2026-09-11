@@ -153,7 +153,7 @@ Alles über Umgebungsvariablen (siehe `.env.example`):
 | `JMNEWS_TIMEZONE` | `Europe/Berlin` | Scheduler-Zeitzone |
 | `JMNEWS_COLLECT_HOUR` / `_MINUTE` | `6` / `45` | Daemon-Trigger |
 | `JMNEWS_API_ENABLED` | `1` | HTTP-API an/aus |
-| `JMNEWS_API_PORT` | `8080` | HTTP-API-Port (Host und Container) |
+| `JMNEWS_API_PORT` | `8080` | HTTP-API-Port (Container, auf dem Host nur localhost) |
 | `JMNEWS_API_TOKEN` | _leer_ | Bearer-Token; leer = API aus |
 
 ## HTTP-API (für den Claude-Cloud-Job)
@@ -161,16 +161,18 @@ Alles über Umgebungsvariablen (siehe `.env.example`):
 Der Daemon stellt eine schreibgeschützte JSON-API bereit, die exakt die
 Inhalte liefert, die per Telegram verschickt werden. Sie ist nur aktiv,
 wenn `JMNEWS_API_TOKEN` gesetzt ist (Port per `JMNEWS_API_PORT`,
-Default 8080).
+Default 8080, nur auf localhost gebunden). Öffentlich erreichbar ist sie
+per HTTPS über den Caddy-Proxy des Servers unter
+`https://www.liquimerge.de/jmnews-api/…` (Einrichtung siehe DEPLOY.md).
 
 ```bash
 # Token erzeugen und in .env eintragen
 openssl rand -hex 32
 
 # Abfragen
-curl -s http://49.13.121.191:8080/health
+curl -s https://www.liquimerge.de/jmnews-api/health
 curl -s -H "Authorization: Bearer $JMNEWS_API_TOKEN" \
-  http://49.13.121.191:8080/api/briefings/latest | jq .
+  https://www.liquimerge.de/jmnews-api/api/briefings/latest | jq .
 ```
 
 | Endpoint | Zweck |
@@ -182,8 +184,6 @@ curl -s -H "Authorization: Bearer $JMNEWS_API_TOKEN" \
 | `GET /api/items?since_days=1&category=action,relevant&source=ilb&limit=100` | Items im Zeitfenster |
 
 Auth per `Authorization: Bearer <token>` oder `X-API-Key: <token>`.
-Die Verbindung läuft über HTTP ohne TLS; das Token schützt nur den
-Lesezugriff auf Briefings. Wer TLS will, hängt Caddy o.ä. davor.
 
 Eine tägliche Claude-Cloud-Routine (claude.ai/code/routines) ruft
 `/api/briefings/latest` ab, gleicht die Inhalte mit Kalender, Mail und
